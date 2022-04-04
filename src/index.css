@@ -1,0 +1,31 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100vw;
+    min-height: 100vh;
+    max-height: fit-content;
+}
+
+header {
+    width: 100vw;
+    height: 15vh;
+    background-color: rgb(151, 177, 202);
+    padding: 1%;
+}
+
+main {
+    width: 100vw;
+    height: 80vh;
+    background-color: rgb(207, 218, 228);
+    padding: 1%;
+}
+
+footer {
+    width: 100vw;
+    height: 5vh;
+    background-color: rgb(151, 177, 202);
+    padding: 1%;
+}
