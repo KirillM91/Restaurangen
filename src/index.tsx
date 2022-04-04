@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
-import { Booking } from './components/Booking';
+import { Booking } from './components/Booking/Booking';
 import { NotFound } from './components/NotFound';
 import { Contact } from './components/Contact';
 import { Admin } from './components/Admin';
