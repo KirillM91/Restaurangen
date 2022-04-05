@@ -1,48 +1,56 @@
-import axios from "axios";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { IGetBooking } from "../../models/IGetBooking";
+import { GetBookingsService } from "../../services/GetBookingsService";
 
 export function CheckAvailability() {
 
     const [pickedDate, setPickedDate] = useState("");
     const [dateTaken, setdateTaken] = useState<Boolean>(true);
+    const [bookings, setBookings] = useState([]);
 
-
+    // Funktion som körs när inputfältet för datum ändras
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
         setPickedDate(e.target.value);
-        console.log(pickedDate)
     }
 
-
-    // Funktion för att se vad valt datum returnerar
+    // Funktion för att hämta bokningar och se om bokning är möjlig
     function checkDate() {
-        console.log("Klick på knapp")
 
-        axios
-        .get<IGetBooking>("https://school-restaurant-api.azurewebsites.net/booking/restaurant/624aa9f0df8a9fb11c3ea8aa")
-        .then((response) => {
+        let service = new GetBookingsService();
 
-            console.log(response.data)
+        service.getBookings()
+        .then(bookings => {
+            setBookings(bookings)
+            console.log(bookings)
 
-            setPickedDate(pickedDate);
-
-            console.log(pickedDate);
-
-            if (response.data === undefined) {
-                console.log("Ingen data");
+            if (bookings === 0) {
+                console.log("Ingen data, möjligt att boka");
+                setdateTaken(false);
             } else {
-                // Behöver kollas om det finns någon bokning den dagen
-                // if (response.data.date === pickedDate) {
-                //     console.log("Finns bokning med dagens datum");
-                // }
+                console.log("Det finns någon bokning någon dag");
+                // Behöver kollas om det finns någon bokning vald dag
+                if (bookings.date === pickedDate) {
+                    console.log("Finns minst en bokning med valt datum");
+                    // Kolla om det finns 15 bokningar eller fler för vald dag
+                    if (bookings.length >= 15) {
+                        console.log("Det finns minst 15 bokningar denna dag");
+                    }
+                }
             }
         })
         // Fånga eventuellt error
-        .catch((error) => {
+        .catch((error: any) => {
             console.log("Error:", error)
             setdateTaken(false);
-        })
+        });
     };
+
+    let avaliablieTables = bookings.map((booking: IGetBooking) => {
+        return <>
+            <h2>{booking.date}</h2>
+            <h2>{booking.time}</h2>
+        </>
+    })
 
     return(
         <div>
@@ -50,6 +58,7 @@ export function CheckAvailability() {
             <input type="date" onChange={handleChange}></input>
             <button onClick={checkDate}>Se tillgänglighet</button>
             {!dateTaken && <p>Datum är tillgängligt</p>}
+            {avaliablieTables}
         </div>
     );
 };

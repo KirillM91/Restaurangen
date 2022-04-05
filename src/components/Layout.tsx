@@ -16,7 +16,7 @@ export function Layout() {
                 </nav>
             </header>
             <main><Outlet></Outlet></main>
-            <footer></footer>
+            <footer>©</footer>
         </>
     );
 };
