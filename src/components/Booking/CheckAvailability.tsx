@@ -30,11 +30,15 @@ export function CheckAvailability() {
                 console.log("Det finns någon bokning någon dag");
                 // Behöver kollas om det finns någon bokning vald dag
                 if (bookings.date === pickedDate) {
+                    console.log(bookings.date)
+                    console.log(pickedDate)
                     console.log("Finns minst en bokning med valt datum");
                     // Kolla om det finns 15 bokningar eller fler för vald dag
                     if (bookings.length >= 15) {
                         console.log("Det finns minst 15 bokningar denna dag");
                     }
+                } else {
+                    console.log("Finns ingen bokning med valt datum");
                 }
             }
         })
