@@ -1,42 +1,49 @@
+import axios from "axios";
 import { ChangeEvent, useEffect, useState } from "react";
 import { IPostBooking } from "../../models/IPostBooking";
-import { IPostCustomer } from "../../models/IPostCustomer";
 import { CheckAvailability } from "./CheckAvailability";
 
 export function Booking() {
 
+    const restaurantId = "624aa9f0df8a9fb11c3ea8aa"
     const [numberOfGuests, setNumberOfGuests] = useState<number>(1);
     const [disablePlus, setDisablePlus] = useState(false);
     const [disableMinus, setDisableMinus] = useState(false);
     
-    const [newCustomer, setNewCustomer] = useState<IPostCustomer>({
-        name: "",
-        lastname: "",
-        email: "",
-        phone: ""
-    });
-    
     const [newBooking, setNewBooking] = useState<IPostBooking>({    
-        restaurantId: "624aa9f0df8a9fb11c3ea8aa",
-        date: "",
-        time: "",
-        numberOfGuests: numberOfGuests,
-        customer: newCustomer      
+        restaurantId: restaurantId,
+        date: "2022-01-01",
+        time: "21:00",
+        numberOfGuests: 0,
+        customer: {
+            name: "",
+            lastname: "",
+            email: "",
+            phone: ""
+        }  
     });
 
-    //Sätter användarens värden, från förmuläret, in i newCustomer objektet
+    //Sätter användarens värden, från förmuläret, in i newBooking.customer objektet
     function handleChange(event: ChangeEvent<HTMLInputElement>) {
         let name = event.target.name;
-        setNewCustomer({...newCustomer, [name]: event.target.value})        
-    };
+        setNewBooking({...newBooking, [name]: event.target.value});              
+    };  
 
-    //(I framtiden) Skapar en post request med en ny bokning
-    function submtBooking(){
-        console.log("kund:", newCustomer);
-        console.log("bokning:", newBooking);
+    //Skapar en post request med en ny bokning
+    function submitBooking(){
+
+        axios.post("https://school-restaurant-api.azurewebsites.net/booking/create", 
+        newBooking,
+        {headers: {"content-type": "application/json"}}
+        )
+        .then(response => {console.log(response.data)})
+        .catch(error => {console.log(error)});
+
+        console.log(newBooking);
         
     }
 
+    //Uppdaterar renderingen av antalet gäster samt uppdaterar numberOfGuests i newBooking
     useEffect(() => {
         if (numberOfGuests >= 6) {
             setDisablePlus(true);
@@ -50,7 +57,9 @@ export function Booking() {
             setDisableMinus(false);
         };
 
-    });
+        setNewBooking({...newBooking, numberOfGuests: numberOfGuests});                
+
+    }, [numberOfGuests]);
 
 
     return(
@@ -66,22 +75,22 @@ export function Booking() {
 
             <form>
                 <label htmlFor="name"> Namn: </label>
-                <input type="text" name="name" value={newCustomer.name} onChange={handleChange} id="name" />
+                <input type="text" name="name" value={newBooking.customer.name} onChange={handleChange} id="name" />
                 <br/>
                 
                 <label htmlFor="lastname"> Efternamn: </label>
-                <input type="text" name="lastname" value={newCustomer.lastname} onChange={handleChange} id="lastname"/>
+                <input type="text" name="lastname" value={newBooking.customer.lastname} onChange={handleChange} id="lastname"/>
                 <br/>
 
                 <label htmlFor="email"> E-post: </label>
-                <input type="text" name="email" value={newCustomer.email} onChange={handleChange} id="email"/>
+                <input type="text" name="email" value={newBooking.customer.email} onChange={handleChange} id="email"/>
                 <br/>
 
                 <label htmlFor="phone"> Telefon nr: </label>
-                <input type="text" name="phone" value={newCustomer.phone} onChange={handleChange} id="phone"/>
+                <input type="text" name="phone" value={newBooking.customer.phone} onChange={handleChange} id="phone"/>
                 <br/>
             </form>
-            <button onClick={submtBooking}>Boka bord</button>
+            <button onClick={submitBooking}>Boka bord</button>
         </div>
     );
 };
