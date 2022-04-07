@@ -37,7 +37,7 @@ export function Booking() {
 
     //Skapar en post request med en ny bokning
     function submitBooking(){
-
+        
         axios.post("https://school-restaurant-api.azurewebsites.net/booking/create", 
         newBooking,
         {headers: {"content-type": "application/json"}}
