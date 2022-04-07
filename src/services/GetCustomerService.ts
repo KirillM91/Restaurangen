@@ -1,4 +1,5 @@
 import axios from "axios";
+import { IGetCustomer } from "../models/IGetCustomer";
 
 export class GetCustomerService {
 

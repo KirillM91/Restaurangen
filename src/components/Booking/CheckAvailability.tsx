@@ -15,16 +15,12 @@ export function CheckAvailability(props: IChildToParentProps) {
     const [pickedDate, setPickedDate] = useState("");
     const [bookings, setBookings] = useState<GetBooking[]>([]);
 
-    const [timeTaken18, setTimeTaken18] = useState<Boolean>(true);
-    const [timeTaken21, setTimeTaken21] = useState<Boolean>(true);
+    const [timeTaken18, setTimeTaken18] = useState(true);
+    const [timeTaken21, setTimeTaken21] = useState(true);
     const [pickedTime, setPickedTime] = useState("");
 
     let timeList18: GetBooking[] = [];
     let timeList21: GetBooking[] = [];
-
-    useEffect(() => {
-
-    }, [bookings])
 
     // Funktion som körs när inputfältet för datum ändras
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
@@ -40,6 +36,7 @@ export function CheckAvailability(props: IChildToParentProps) {
     function checkDate() {
 
         timeList18 = [];
+        timeList21 = [];
 
         console.log(pickedDate)
 
@@ -61,20 +58,26 @@ export function CheckAvailability(props: IChildToParentProps) {
             })
             setBookings(bookingsFromApi);
 
-            for (var booking in bookingsFromApi) {
+            if (bookingsFromApi <= 0) {
+                setTimeTaken18(false)
+                setTimeTaken21(false)
+            } else {
 
+            for (var booking in bookingsFromApi) {
+                
                 if (bookingsFromApi[booking].date === pickedDate) {
 
                     for (var time in bookingsFromApi[booking]) {
 
-                        if (bookingsFromApi[booking][time] === "22:00"){
-                            console.log("22:00");
+                        if (bookingsFromApi[booking][time] === "18:00"){
+                            console.log("18:00");
 
                             timeList18.push(bookingsFromApi[booking][time]);
 
                             if (timeList18.length >= 15) {
                                 console.log("Det är fullbokat kl. 18 idag")
                                 setTimeTaken18(true)
+                                // return
                             } else {
                                 console.log("Det går att boka kl. 18 idag")
                                 setTimeTaken18(false)
@@ -88,6 +91,7 @@ export function CheckAvailability(props: IChildToParentProps) {
                             if (timeList21.length >= 15) {
                                 console.log("Det är fullbokat kl. 21 idag")
                                 setTimeTaken21(true)
+                                // return
                             } else {
                                 console.log("Det går att boka kl. 21 idag")
                                 setTimeTaken21(false)
@@ -100,6 +104,7 @@ export function CheckAvailability(props: IChildToParentProps) {
                     setTimeTaken21(false)
                     return
                 }
+            }
             }   
         })
         // Fånga eventuellt error
@@ -111,7 +116,6 @@ export function CheckAvailability(props: IChildToParentProps) {
     // När klickat på kl. 18
     function chooseTime18() {
         console.log("Valt kl. 18");
-        // setPickedTime("18:00");
 
         props.childToParentTime("18:00");
         setPickedTime("18:00");
@@ -120,7 +124,6 @@ export function CheckAvailability(props: IChildToParentProps) {
     // När klickat på kl. 21
     function chooseTime21() {
         console.log("Valt kl. 21");
-        // setPickedTime("21:00");
 
         props.childToParentTime("21:00");
         setPickedTime("21:00");
