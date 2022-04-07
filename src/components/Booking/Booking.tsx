@@ -1,6 +1,7 @@
 import axios from "axios";
 import { ChangeEvent, useEffect, useState } from "react";
 import { IPostBooking } from "../../models/IPostBooking";
+import { IPostCustomer } from "../../models/IPostCustomer";
 import { CheckAvailability } from "./CheckAvailability";
 
 export function Booking() {
@@ -9,24 +10,29 @@ export function Booking() {
     const [numberOfGuests, setNumberOfGuests] = useState<number>(1);
     const [disablePlus, setDisablePlus] = useState(false);
     const [disableMinus, setDisableMinus] = useState(false);
+    const [disabledInput, setDisabledInput] = useState(true);
+
+    const [customer, setCustomer] = useState<IPostCustomer>({
+        name: "",
+        lastname: "",
+        email: "",
+        phone: ""
+    });
     
     const [newBooking, setNewBooking] = useState<IPostBooking>({    
         restaurantId: restaurantId,
-        date: "2022-01-01",
-        time: "21:00",
+        date: "",
+        time: "",
         numberOfGuests: 0,
-        customer: {
-            name: "",
-            lastname: "",
-            email: "",
-            phone: ""
-        }  
+        customer: customer 
     });
 
     //Sätter användarens värden, från förmuläret, in i newBooking.customer objektet
     function handleChange(event: ChangeEvent<HTMLInputElement>) {
-        let name = event.target.name;
-        setNewBooking({...newBooking, [name]: event.target.value});              
+        let name: string = event.target.name;
+        
+        setCustomer({...customer, [name]: event.target.value});        
+        setNewBooking({...newBooking, customer: customer})      
     };  
 
     //Skapar en post request med en ny bokning
@@ -61,11 +67,29 @@ export function Booking() {
 
     }, [numberOfGuests]);
 
+    // Tar emot värde från CheckAvailability
+    function childToParentDate(childDataDate: string) {
+        console.log(childDataDate)
+        setNewBooking({...newBooking, date: childDataDate})
+        
+    };
+
+    function childToParentTime(childDataTime: string) {
+        console.log(childDataTime)
+        
+        setNewBooking({...newBooking, time: childDataTime})
+        setDisabledInput(false)
+    };
+
+    function testFunk() {
+        console.log("new booking test: ", newBooking);
+        
+    }
 
     return(
         <div>
             <p>Booking</p>
-            <CheckAvailability></CheckAvailability>
+            <CheckAvailability childToParentDate={childToParentDate} childToParentTime={childToParentTime}></CheckAvailability>
 
             <div>
                 <p>Antal gäster: {numberOfGuests}</p>
@@ -75,22 +99,23 @@ export function Booking() {
 
             <form>
                 <label htmlFor="name"> Namn: </label>
-                <input type="text" name="name" value={newBooking.customer.name} onChange={handleChange} id="name" />
+                <input disabled={disabledInput} type="text" name="name" onChange={handleChange} value={customer.name} id="name" />
                 <br/>
                 
                 <label htmlFor="lastname"> Efternamn: </label>
-                <input type="text" name="lastname" value={newBooking.customer.lastname} onChange={handleChange} id="lastname"/>
+                <input disabled={disabledInput} type="text" name="lastname" onChange={handleChange} value={customer.lastname} id="lastname"/>
                 <br/>
 
                 <label htmlFor="email"> E-post: </label>
-                <input type="text" name="email" value={newBooking.customer.email} onChange={handleChange} id="email"/>
+                <input disabled={disabledInput} type="text" name="email" onChange={handleChange} value={customer.email} id="email"/>
                 <br/>
 
                 <label htmlFor="phone"> Telefon nr: </label>
-                <input type="text" name="phone" value={newBooking.customer.phone} onChange={handleChange} id="phone"/>
+                <input disabled={disabledInput} type="text" name="phone" onChange={handleChange} value={customer.phone} id="phone"/>
                 <br/>
             </form>
-            <button onClick={submitBooking}>Boka bord</button>
+            <button disabled={disabledInput} onClick={submitBooking}>Boka bord</button>
+            <button onClick={testFunk}>Testa conssole log</button>
         </div>
     );
 };
