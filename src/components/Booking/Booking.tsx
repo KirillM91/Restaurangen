@@ -11,6 +11,8 @@ export function Booking() {
     const [disablePlus, setDisablePlus] = useState(false);
     const [disableMinus, setDisableMinus] = useState(false);
     const [disabledInput, setDisabledInput] = useState(true);
+    const [bookingOk, setBookingOk] = useState(false);
+    const [confirmGDPR, setConfirmGDPR] = useState(false);
 
     const [customer, setCustomer] = useState<IPostCustomer>({
         name: "",
@@ -46,6 +48,8 @@ export function Booking() {
         .catch(error => {console.log(error)});
 
         console.log(newBooking);
+
+        setBookingOk(true);
         
     }
 
@@ -86,6 +90,24 @@ export function Booking() {
         
     }
 
+    // Olika symboler beroende på om GDPR är godkänt eller inte
+    let submitGDPR = 
+    <>◻</>
+    if (confirmGDPR) {
+        submitGDPR =
+        <>✔</>
+    };
+
+    // Om bokning är genomförd ska bekräftelse visas
+    let bookingDone = 
+    <></>
+    if (bookingOk) {
+        bookingDone =
+        <div>
+            <p>Din bokning har nu genomförts. Vi ser fram emot ditt besök!</p>
+        </div>
+    };
+
     return(
         <div>
             <p>Booking</p>
@@ -114,8 +136,11 @@ export function Booking() {
                 <input disabled={disabledInput} type="text" name="phone" onChange={handleChange} value={customer.phone} id="phone"/>
                 <br/>
             </form>
-            <button disabled={disabledInput} onClick={submitBooking}>Boka bord</button>
+            <p><span onClick = {() => setConfirmGDPR(true)}>{submitGDPR}</span>Jag godkänner Kitchen on Fires-villkor för personuppgiftshantering (GDPR)</p>
+            <button disabled={disabledInput && !confirmGDPR} onClick={submitBooking}>Boka bord</button>
             <button onClick={testFunk}>Testa conssole log</button>
+
+            {bookingDone}
         </div>
     );
 };
