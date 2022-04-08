@@ -1,0 +1,19 @@
+/* Startsidan */
+#homeBgImg {
+    background-image: url("./assets/chili.jpeg");
+    background-size: cover;
+    background-position: center;
+    width: 100vw;
+    min-height: 80vh;
+    max-height: fit-content;
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    list-style-type: none;
+}
+
+a {
+    color: white;
+}
