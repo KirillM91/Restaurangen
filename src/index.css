@@ -22,7 +22,7 @@ body {
 
 main {
     width: 100vw;
-    min-height: 80vh;
+    min-height: 87vh;
     max-height: fit-content;
     background-color: rgb(207, 218, 228);
     padding: 1%;
@@ -35,4 +35,5 @@ footer {
     height: 5vh;
     background-color: rgba(255, 255, 255, 0.027);
     padding: 1%;
+    color: white;
 }

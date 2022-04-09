@@ -4,6 +4,8 @@ import { GetBooking } from "../../models/GetBooking";
 import { IGetBooking } from "../../models/IGetBooking";
 import { IPostBooking } from "../../models/IPostBooking";
 import { GetBookingsService } from "../../services/GetBookingsService";
+import { TimeButton } from "../styled-components/Buttons";
+import { TimeDiv } from "../styled-components/Divs";
 
 interface IChildToParentProps {
     childToParentDate(newBookingDate: string): void;
@@ -131,13 +133,16 @@ export function CheckAvailability(props: IChildToParentProps) {
 
     return(
         <div>
-            <p>CheckAvailability</p>
-            <input type="date" onChange={handleChange} value={pickedDate}></input>
+            {/* <p>CheckAvailability</p> */}
+            <label htmlFor="date"> Välj datum: </label>
+            <input type="date" onChange={handleChange} value={pickedDate} name="date"></input>
             <button onClick={checkDate} >Se tillgänglighet</button>
-            {!timeTaken18 && <button onClick={chooseTime18}>Kl. 18</button>}
-            {!timeTaken21 && <button onClick={chooseTime21}>Kl. 21</button>}
-            {timeTaken18 && <button disabled>Kl. 18</button>}
-            {timeTaken21 && <button disabled>Kl. 21</button>}
+            <TimeDiv>
+                {!timeTaken18 && <TimeButton onClick={chooseTime18}>Kl. 18</TimeButton>}
+                {!timeTaken21 && <TimeButton onClick={chooseTime21}>Kl. 21</TimeButton>}
+                {timeTaken18 && <button disabled>Kl. 18</button>}
+                {timeTaken21 && <button disabled>Kl. 21</button>}
+            </TimeDiv>
         </div>
     );
 };

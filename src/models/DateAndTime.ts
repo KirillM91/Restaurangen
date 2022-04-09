@@ -1,3 +1,5 @@
 export class DateAndTime {
-    constructor(public choosenDate: string, public choosenTime: string) {}
+    constructor(
+        public choosenDate: string, 
+        public choosenTime: string) {}
 }

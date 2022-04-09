@@ -2,6 +2,7 @@ import axios from "axios";
 import { ChangeEvent, useEffect, useState } from "react";
 import { IPostBooking } from "../../models/IPostBooking";
 import { IPostCustomer } from "../../models/IPostCustomer";
+import { CancelBooking } from "./CancelBooking";
 import { CheckAvailability } from "./CheckAvailability";
 
 export function Booking() {
@@ -110,7 +111,7 @@ export function Booking() {
 
     return(
         <div>
-            <p>Booking</p>
+            {/* <p>Booking</p> */}
             <CheckAvailability childToParentDate={childToParentDate} childToParentTime={childToParentTime}></CheckAvailability>
 
             <div>
@@ -141,6 +142,7 @@ export function Booking() {
             <button onClick={testFunk}>Testa conssole log</button>
 
             {bookingDone}
+            <CancelBooking></CancelBooking>
         </div>
     );
 };
