@@ -5,7 +5,7 @@ import { IGetBooking } from "../../models/IGetBooking";
 import { IPostBooking } from "../../models/IPostBooking";
 import { GetBookingsService } from "../../services/GetBookingsService";
 import { TimeButton } from "../styled-components/Buttons";
-import { TimeDiv } from "../styled-components/Divs";
+import { TransparentDiv } from "../styled-components/Divs";
 
 interface IChildToParentProps {
     childToParentDate(newBookingDate: string): void;
@@ -137,12 +137,12 @@ export function CheckAvailability(props: IChildToParentProps) {
             <label htmlFor="date"> Välj datum: </label>
             <input type="date" onChange={handleChange} value={pickedDate} name="date"></input>
             <button onClick={checkDate} >Se tillgänglighet</button>
-            <TimeDiv>
+            <TransparentDiv>
                 {!timeTaken18 && <TimeButton onClick={chooseTime18}>Kl. 18</TimeButton>}
                 {!timeTaken21 && <TimeButton onClick={chooseTime21}>Kl. 21</TimeButton>}
                 {timeTaken18 && <button disabled>Kl. 18</button>}
                 {timeTaken21 && <button disabled>Kl. 21</button>}
-            </TimeDiv>
+            </TransparentDiv>
         </div>
     );
 };

@@ -2,7 +2,8 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { IPostBooking } from "../../models/IPostBooking";
 import { IPostCustomer } from "../../models/IPostCustomer";
 import { PostNewBooking } from "../../services/PostNewBooking";
-import { CancelBooking } from "./CancelBooking";
+import { PlusMinusButton } from "../styled-components/Buttons";
+import { BorderDiv, PaddingDiv, WrongInputDiv } from "../styled-components/Divs";
 import { CheckAvailability } from "./CheckAvailability";
 
 export function Booking() {
@@ -181,14 +182,6 @@ export function Booking() {
         setDisableInput(false);
     };
 
-    // // Olika symboler beroende på om GDPR är godkänt eller inte
-    // let submitGDPR = 
-    // <>◻</>
-    // if (confirmGDPR) {
-    //     submitGDPR =
-    //     <>✔</>
-    // };
-
     // Om bokning är genomförd ska bekräftelse visas
     let bookingDone = 
     <></>
@@ -200,14 +193,16 @@ export function Booking() {
     };
 
     return(
-        <div>            
-            <CheckAvailability childToParentDate={childToParentDate} childToParentTime={childToParentTime}></CheckAvailability>
+        <div>          
+            <PaddingDiv>
+                <CheckAvailability childToParentDate={childToParentDate} childToParentTime={childToParentTime}></CheckAvailability>
+            </PaddingDiv>  
 
-            <div>
+            <BorderDiv>
                 <p>Antal gäster: {numberOfGuests}</p>
-                <button onClick = {() => setNumberOfGuests(numberOfGuests +1)} disabled={disablePlus}>+</button>
-                <button onClick = {() => setNumberOfGuests(numberOfGuests -1)} disabled={disableMinus}>-</button>
-            </div>
+                <PlusMinusButton onClick = {() => setNumberOfGuests(numberOfGuests +1)} disabled={disablePlus}>+</PlusMinusButton>
+                <PlusMinusButton onClick = {() => setNumberOfGuests(numberOfGuests -1)} disabled={disableMinus}>-</PlusMinusButton>
+            </BorderDiv>
 
             <form>
                 <label htmlFor="name"> Namn: </label>
@@ -263,23 +258,21 @@ export function Booking() {
                     id="GDPRcheckbox"                    
                     onClick={() => setConfirmGDPR(!confirmGDPR)}
                 />
-                <label htmlFor="GDPRcheckbox">Jag godkänner Kitchen on Fires-villkor för personuppgiftshantering (GDPR)</label>
+                <label id="labelGDPRcheckbox" htmlFor="GDPRcheckbox">Jag godkänner Kitchen on Fires-villkor för personuppgiftshantering (GDPR)</label>
                 <br/>
                 
             </form>
 
-            <button disabled={disableSubmitInput} onClick={submitBooking}>Boka bord</button>
-            
-            <div>
+            <WrongInputDiv>
                 {touched.name && <p>{error.nameError.name}</p>}
                 {touched.lastname && <p>{error.lastnameError.lastname}</p>}
                 {touched.email && <p>{error.emailError.email}</p>}
                 {touched.phone && <p>{error.phoneError.phone}</p>}
-            </div>
-            {/* <p><span onClick = {() => setConfirmGDPR(true)}>{submitGDPR}</span>Jag godkänner Kitchen on Fires-villkor för personuppgiftshantering (GDPR)</p> */}
+            </WrongInputDiv>
+
+            <button disabled={disableSubmitInput} onClick={submitBooking}>Boka bord</button>
             
             {bookingDone}
-            <CancelBooking></CancelBooking>
         </div>
     );
 };

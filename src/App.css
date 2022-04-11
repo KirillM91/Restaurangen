@@ -78,7 +78,7 @@
 .layout-header .layout-nav-wrapper .layout-nav ul li a {
     text-decoration: none;
     font-size: 3rem;
-    font-family:'Courier New', Courier, monospace;
+    /* font-family:'Courier New', Courier, monospace; */
     color: white;
 }
 
@@ -141,4 +141,22 @@
 
 
 
+/* Kontakt-sida*/ 
+#chiliFlamesImg {
+    width: 70%;
+    height: auto;
+}
 
+label {
+    display: block;
+}
+
+/* GDPR-texten */
+#labelGDPRcheckbox {
+    display: inline;
+    margin-left: 1%;
+}
+
+input {
+    margin-bottom: 2%;
+}

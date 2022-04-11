@@ -12,3 +12,18 @@ export const TimeButton = styled.button`
     padding: 4%;
     border-radius: 8px;
 `;
+
+export const SubmitButton = styled.button`
+    background-color: #e7e5e5;
+    color: black;
+    padding: 0.5%;
+    border-radius: 8px;
+`;
+
+export const PlusMinusButton = styled.button`
+    background-color: #eeeaea;
+    color: black;
+    padding: 1%;
+    border-radius: 8px;
+    width: 38px;
+`;
