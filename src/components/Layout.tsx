@@ -16,7 +16,7 @@ export function Layout() {
     return(
         <>
             <header className="layout-header">
-                <h1 className="layout-logotype">Kitchen On Fire</h1>
+                <h1 className="layout-logotype">Kitchen On <span className="layout-logotype-fire">Fire</span></h1>
                 <div className="layout-nav-wrapper">                    
                     <nav className={`${menuOpen ? "menu-open": "menu-closed"} layout-nav`}>
                         <ul>
