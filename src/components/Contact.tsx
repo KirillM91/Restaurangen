@@ -41,7 +41,7 @@ export function Contact() {
     //Validerar input fälten och ger medelanden beroende på felet
     function validation() {               
 
-        if (!bookingId.match(/^\S{3}$/)) {
+        if (!bookingId.match(/^\S{24}$/)) {
             error.bookingIdError.bookingIdNr = "Vänligen fyll i en korrekt bokningsId";
             error.bookingIdError.approved = false;
         } else {
@@ -72,7 +72,7 @@ export function Contact() {
     if (bookingCancel) {
         bookingCancelled =
         <div>
-            <p>Du har nu avbokat.</p>
+            <p>Vi har nu tagit emot din avbokning.</p>
         </div>
     };
     

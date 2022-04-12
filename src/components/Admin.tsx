@@ -10,13 +10,15 @@ import { DeleteButton } from "./styled-components/Buttons";
 import { BookingDiv, ChangeBookingDiv } from "./styled-components/Divs";
 
 export function Admin() {
-
     
     const [bookings, setBookings] = useState<IGetBooking[]>([]);
     const [customers, setCustomers] = useState<IGetCustomer[]>([]);
     const [numberOfGuests, setNumberOfGuests] = useState<number>(1);
     const [disablePlus, setDisablePlus] = useState(false);
     const [disableMinus, setDisableMinus] = useState(false);
+    const [changeBookingAdmin, setChangeBookingAdmin] = useState(false);
+
+    let ableChangeBooking: IGetBooking[] = [];
 
     const [changeBooking, setChangeBooking] = useState<ChangeBooking>({    
         date: "",
@@ -24,23 +26,26 @@ export function Admin() {
         numberOfGuests: 0,
     });
     
-    let customerArray: IGetCustomer[] = []
+    let customerArray: IGetCustomer[] = [];
     let service = new GetBookingsService();
     let customerService = new GetCustomerService();
 
+    // useEffect(() => {
+
+    // }, [changeBookingAdmin]);
+
     useEffect(() => {
-        
+
         service.getBookings()
         .then(bookingsResponse => {
             setBookings(bookingsResponse);
             console.log("Bokningar:", bookingsResponse)
         }) 
-        
     }, []);
 
     
     useEffect(() => {  
-        
+
         for(var booking in bookings) {            
             let customerId = bookings[booking].customerId;
 
@@ -48,17 +53,14 @@ export function Admin() {
             .then(customerServiceResponse => {
                 customerArray.push(customerServiceResponse)
                 setCustomers(customerArray.flat())
-                
             }); 
         }   
-  
-    }, [bookings])
+    }, [bookings]);
 
-
-    function checkCutomerArray() {
+    function checkCustomerArray() {
         console.log("customers", customers);
         console.log("bookings", bookings);
-    }
+    };
 
     //Uppdaterar renderingen av antalet gäster samt uppdaterar numberOfGuests i changeBooking
     useEffect(() => {
@@ -82,8 +84,7 @@ export function Admin() {
     function adminDeleteBooking(bookingId: string, customerId: string) {
         // let service = new GetBookingsService();
     
-        deleteBooking(bookingId)
-
+        deleteBooking(bookingId);
 
         //===WIP===
 
@@ -101,8 +102,7 @@ export function Admin() {
 
         console.log("delet funk customers", customers);
         console.log("delet funk bookings", bookings);
-        
-    }
+    };
 
 
     // Uppdatera värde vid förändring genom input
@@ -112,8 +112,7 @@ export function Admin() {
         setChangeBooking({...changeBooking, [name]: e.target.value});       
         
         console.log(changeBooking)
-        
-    }
+    };
 
 
     // När "Ändra bokning" klickas på. Kör put-funktion i service
@@ -121,8 +120,6 @@ export function Admin() {
         
         updateBooking(bookingId, changeBooking, customerId);
     };
-
-    
 
     let customer = customers.map((customer: IGetCustomer, j: number) => {
 
@@ -144,8 +141,8 @@ export function Admin() {
                         {/* <p>RestaurangId: {bookings[i].restaurantId}</p> */}
                         <p>Bokad tid: {bookings[i].time}</p>
                         <DeleteButton onClick = {() => adminDeleteBooking(bookings[i]._id, customer._id)}>Ta bort bokning</DeleteButton>
-                        
-                        <ChangeBookingDiv>
+                        <button onClick = {() => printChangeBooking(bookings[i])}>Ändra bokning</button>
+                        {/* <ChangeBookingDiv>
                             <h3>Ändra bokningen: </h3>
                             <span>Antal gäster: {numberOfGuests}</span>
                             <button onClick = {() => setNumberOfGuests(numberOfGuests +1)} disabled={disablePlus}>+</button>
@@ -163,9 +160,10 @@ export function Admin() {
                                 <input type="text" name="time" value={changeBooking.time} onChange={handleInput}/>
                             </ChangeBookingDiv>
                         </form>
+
                         <ChangeBookingDiv>
                             <button onClick = {() => adminChangeBooking(bookings[i]._id, bookings[i].customerId)}>Ändra bokning</button>
-                        </ChangeBookingDiv>
+                        </ChangeBookingDiv> */}
 
                     </BookingDiv> 
                 )
@@ -173,9 +171,78 @@ export function Admin() {
         }
     })
 
- 
+    function printChangeBooking(booking: IGetBooking) {
 
-    // })
+        ableChangeBooking.push(booking);
+
+        setChangeBookingAdmin(true)
+    };
+
+    let ableChange =
+    <></>
+    if (changeBookingAdmin) {
+        for (let i = 0; i < bookings.length; i++) {
+            ableChange = 
+            <div> 
+                <ChangeBookingDiv>
+                    <h3>Ändra bokningen: </h3>
+                    <span>Antal gäster: {numberOfGuests}</span>
+                    <button onClick = {() => setNumberOfGuests(numberOfGuests +1)} disabled={disablePlus}>+</button>
+                    <button onClick = {() => setNumberOfGuests(numberOfGuests -1)} disabled={disableMinus}>-</button>
+                </ChangeBookingDiv>
+    
+                <form>
+                    <ChangeBookingDiv>
+                        <label htmlFor="date"> Datum: </label>
+                        <input type="date" name="date" onChange={handleInput}/>
+                    </ChangeBookingDiv>
+    
+                    <ChangeBookingDiv>
+                        <label htmlFor="time"> Tid: </label>
+                        <input type="text" name="time" value={changeBooking.time} onChange={handleInput}/>
+                    </ChangeBookingDiv>
+                </form>
+    
+                <ChangeBookingDiv>
+                    <button onClick = {() => adminChangeBooking(bookings[i]._id, bookings[i].customerId)}>Bekräfta ändring</button>
+                </ChangeBookingDiv>
+            </div>
+        }
+    };
+
+    // let changeBookingAsAdmin = ableChangeBooking.map((change) => {
+    //     <></>
+    //     if (changeBookingAdmin) {
+    //         changeBookingAsAdmin = 
+          
+    //         <>
+    //              <ChangeBookingDiv>
+    //                 <h3>Ändra bokningen: </h3>
+    //                 <span>Antal gäster: {numberOfGuests}</span>
+    //                 <button onClick = {() => setNumberOfGuests(numberOfGuests +1)} disabled={disablePlus}>+</button>
+    //                 <button onClick = {() => setNumberOfGuests(numberOfGuests -1)} disabled={disableMinus}>-</button>
+    //             </ChangeBookingDiv>
+    
+    //             <form>
+    //                 <ChangeBookingDiv>
+    //                     <label htmlFor="date"> Datum: </label>
+    //                     <input type="date" name="date" onChange={handleInput}/>
+    //                 </ChangeBookingDiv>
+    
+    //                 <ChangeBookingDiv>
+    //                     <label htmlFor="time"> Tid: </label>
+    //                     <input type="text" name="time" value={changeBooking.time} onChange={handleInput}/>
+    //                 </ChangeBookingDiv>
+    //             </form>
+    
+    //             <ChangeBookingDiv>
+    //                 <button onClick = {() => adminChangeBooking(change._id, change.customerId)}>Bekräfta ändring</button>
+    //             </ChangeBookingDiv>
+    //         </>
+ 
+    //     }
+    // });
+
 
     // let booking = bookings.map((booking: IGetBooking) => {
     //     customers.map((customer: IGetCustomer, i: number) => {
@@ -214,11 +281,12 @@ export function Admin() {
 
     return(
         <section>
-            <p>Admin</p>
             <div> 
                 {customer}
+                {ableChange}
+                {/* {changeBookingAsAdmin} */}
             </div>
-            <button onClick={checkCutomerArray}>Click</button>
+            <button onClick={checkCustomerArray}>Click</button>
         </section>
     );
 };

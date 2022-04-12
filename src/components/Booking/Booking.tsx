@@ -189,6 +189,7 @@ export function Booking() {
         bookingDone =
         <div>
             <p>Din bokning har nu genomförts. Vi ser fram emot ditt besök!</p>
+            <p>En bekräftelse har sänts via mail.</p>
         </div>
     };
 
