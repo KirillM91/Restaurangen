@@ -37,6 +37,7 @@ export const TransparentDiv = styled.div`
     background-color: #ffffff1f;
     padding: 3%;
     border-radius: 10px;
+    align-self: center;
 `;
 
 export const WrongInputDiv = styled.div`
