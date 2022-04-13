@@ -88,20 +88,26 @@ export function Admin() {
 
         //===WIP===
 
-        // let bookingIds = bookings.map(customerId => customerId.customerId)
-        // let i = bookingIds.indexOf(customerId)  
-        // bookings.splice(i, 1)       
-        // setBookings(bookings)
+        let bookingIds = bookings.map(customerId => customerId.customerId)
+        let i = bookingIds.indexOf(customerId)        
+        bookings.splice(i, 1)
 
-        // let customerIds = customers.map(userId => userId._id)
-        // let j = customerIds.indexOf(customerId)
-        // customers.splice(j, 1)     
-        // setCustomers(customers)
+        setBookings(bookings.filter(item => item.customerId !== customerId))
+
+
+        let customerIds = customers.map(userId => userId._id)
+        let j = customerIds.indexOf(customerId)       
+        customers.splice(j, 1)
+        
+        setCustomers(customers.filter(item => item._id !== customerId))
+        
 
         // console.log("i: ", i, "j: ", j)
+        console.log(customerId);
+        
 
-        console.log("delet funk customers", customers);
-        console.log("delet funk bookings", bookings);
+        console.log("delet funk customers", bookings);
+        console.log("delet funk bookings", customers);
     };
 
 
@@ -120,6 +126,8 @@ export function Admin() {
         
         updateBooking(bookingId, changeBooking, customerId);
     };
+
+      
 
     let customer = customers.map((customer: IGetCustomer, j: number) => {
 
@@ -170,6 +178,8 @@ export function Admin() {
             } 
         }
     })
+
+
 
     function printChangeBooking(booking: IGetBooking) {
 

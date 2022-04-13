@@ -1,10 +1,15 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { IPostBooking } from "../../models/IPostBooking";
 import { IPostCustomer } from "../../models/IPostCustomer";
+import { Itouched } from "../../models/ITouched";
 import { PostNewBooking } from "../../services/PostNewBooking";
 import { PlusMinusButton } from "../styled-components/Buttons";
 import { BorderDiv, PaddingDiv, WrongInputDiv } from "../styled-components/Divs";
+import { FormInput } from "../styled-components/Forms";
 import { CheckAvailability } from "./CheckAvailability";
+
+
+
 
 export function Booking() {
 
@@ -19,8 +24,8 @@ export function Booking() {
 
     //Används för att kolla om användaren har varit inne i fältet 
     //och ger ett felmedelande först när användaren har lämnat fältet
-    const [touched, setTouched] = useState({
-        name: false,
+    const [touched, setTouched] = useState<Itouched>({
+        fname: false,
         lastname: false,
         email: false,
         phone: false
@@ -207,19 +212,21 @@ export function Booking() {
 
             <form>
                 <label htmlFor="name"> Namn: </label>
-                <input 
+                <FormInput
+                    fname={touched.fname}                    
                     disabled={disableInput} 
                     type="text" 
                     name="name" 
                     onChange={handleChange} 
                     value={customer.name} 
                     id="name"
-                    onBlur={() => setTouched({...touched, name: true})}                 
-                />
+                    onBlur={() => setTouched({...touched, fname: true})}                 
+                /> 
                 <br/>
                 
                 <label htmlFor="lastname"> Efternamn: </label>
-                <input 
+                <FormInput 
+                    lastname={touched.lastname} 
                     disabled={disableInput} 
                     type="text" 
                     name="lastname" 
@@ -231,7 +238,8 @@ export function Booking() {
                 <br/>
 
                 <label htmlFor="email"> E-post: </label>
-                <input 
+                <FormInput
+                    email={touched.email}
                     disabled={disableInput} 
                     type="text" 
                     name="email" 
@@ -243,7 +251,8 @@ export function Booking() {
                 <br/>
 
                 <label htmlFor="phone"> Telefon nr: </label>
-                <input 
+                <FormInput
+                    phone={touched.phone}
                     disabled={disableInput} 
                     type="text" 
                     name="phone" 
@@ -265,7 +274,7 @@ export function Booking() {
             </form>
 
             <WrongInputDiv>
-                {touched.name && <p>{error.nameError.name}</p>}
+                {touched.fname && <p>{error.nameError.name}</p>}
                 {touched.lastname && <p>{error.lastnameError.lastname}</p>}
                 {touched.email && <p>{error.emailError.email}</p>}
                 {touched.phone && <p>{error.phoneError.phone}</p>}
