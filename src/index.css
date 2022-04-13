@@ -14,19 +14,10 @@ body {
     color: white;
 }
 
-/* header {
-    width: 100vw;
-    height: 15vh;
-    background-color: rgba(255, 255, 255, 0.027);
-    padding: 1%;
-    color: white;
-} */
-
 main {
     width: 100vw;
     min-height: 87vh;
     max-height: fit-content;
-    /* background-color: rgb(207, 218, 228); */
     padding: 1%;
     margin: 0;
     padding: 0;
@@ -39,5 +30,13 @@ footer {
     background-color: rgba(255, 255, 255, 0.027);
     padding: 1%;
     border-top: solid 1px white;
-    /* color: white; */
+}
+
+@media screen and (min-width: 1200px) {
+    footer {
+        margin: 0 auto;
+        margin-left: 4%;
+        margin-right: 4%;
+        width: 92%;
+    }
 }

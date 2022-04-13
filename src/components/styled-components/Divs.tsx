@@ -24,11 +24,17 @@ export const TimeDiv = styled.div`
 
 export const PaddingDiv = styled.div`
     padding: 5%;
+    @media screen and (min-width: 1200px) {
+        padding: 1%;
+    }
 `;
 
 export const BorderDiv = styled.div`
     padding: 5%;
     border-top: 1px solid white;
+    @media screen and (min-width: 1200px) {
+        padding: 1%;
+    }
 `;
 
 export const TransparentDiv = styled.div`

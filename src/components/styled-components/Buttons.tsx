@@ -26,4 +26,8 @@ export const PlusMinusButton = styled.button`
     padding: 1%;
     border-radius: 8px;
     width: 38px;
+    @media screen and (min-width: 1200px) {
+        font-size: 1.1rem;
+        padding: 0.5%;
+    }
 `;

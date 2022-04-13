@@ -1,6 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { deleteBooking } from "../services/DeleteBookingService";
-import { SubmitButton } from "./styled-components/Buttons";
 import { BorderDiv, PaddingDiv } from "./styled-components/Divs";
 import { H2, H3, H4 } from "./styled-components/Headings";
 
@@ -97,7 +96,7 @@ export function Contact() {
 
             <BorderDiv>
                 <H3>Behöver du avboka?</H3>
-                <H4>Väligen ange ditt bokningsnummer: </H4>
+                <H4>Vänligen ange ditt bokningsnummer: </H4>
                 <input 
                     type="text" 
                     onChange={handleChange} 
