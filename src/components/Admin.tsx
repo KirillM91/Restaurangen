@@ -16,7 +16,7 @@ export function Admin() {
     const [numberOfGuests, setNumberOfGuests] = useState<number>(1);
     const [disablePlus, setDisablePlus] = useState(false);
     const [disableMinus, setDisableMinus] = useState(false);
-    const [changeBookingAdmin, setChangeBookingAdmin] = useState(false);
+    const [changeBookingAdmin, setChangeBookingAdmin] = useState<null | number>();
 
     let ableChangeBooking: string[] = [];
 
@@ -149,9 +149,9 @@ export function Admin() {
                         {/* <p>RestaurangId: {bookings[i].restaurantId}</p> */}
                         <p>Bokad tid: {bookings[i].time}</p>
                         <DeleteButton onClick = {() => adminDeleteBooking(bookings[i]._id, customer._id)}>Ta bort bokning</DeleteButton>
-                        <button onClick = {() => printChangeBooking()}>Ändra bokning</button>
+                        <button onClick = {() => printChangeBooking(j)}>Ändra bokning</button>
                         
-                        {changeBookingAdmin && <div>
+                        {changeBookingAdmin === j && <div>
                             <ChangeBookingDiv>
                                 <h3>Ändra bokningen: </h3>
                                 <span>Antal gäster: {numberOfGuests}</span>
@@ -184,9 +184,11 @@ export function Admin() {
 
 
     // Vid tryck på Ändra boknings-knappen, togglar om rutan ska visas eller ej
-    function printChangeBooking() {
-
-        setChangeBookingAdmin(!changeBookingAdmin)
+    function printChangeBooking(j:number) {
+        setChangeBookingAdmin(
+            changeBookingAdmin === j ? null : j
+        )
+        console.log(j)
     };
 
 
