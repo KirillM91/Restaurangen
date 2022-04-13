@@ -164,3 +164,23 @@ label {
 input {
     margin-bottom: 2%;
 }
+
+
+/* Media query för skärmar större än 1200 px */
+@media screen and (min-width: 1200px) {
+    #homeBgImg {
+        background-image: url("./assets/chili-flames.jpg");
+    }
+
+    .layout-header{       
+        border-bottom: white 1px solid;
+        width: 92%;
+        margin: 0 auto;
+        margin-left: 4%;
+        margin-right: 4%;
+    }
+
+    input {
+        margin-bottom: 1%;
+    }
+}

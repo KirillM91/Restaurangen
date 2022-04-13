@@ -18,7 +18,7 @@ export function Admin() {
     const [disableMinus, setDisableMinus] = useState(false);
     const [changeBookingAdmin, setChangeBookingAdmin] = useState(false);
 
-    let ableChangeBooking: IGetBooking[] = [];
+    let ableChangeBooking: string[] = [];
 
     const [changeBooking, setChangeBooking] = useState<ChangeBooking>({    
         date: "",
@@ -149,29 +149,32 @@ export function Admin() {
                         {/* <p>RestaurangId: {bookings[i].restaurantId}</p> */}
                         <p>Bokad tid: {bookings[i].time}</p>
                         <DeleteButton onClick = {() => adminDeleteBooking(bookings[i]._id, customer._id)}>Ta bort bokning</DeleteButton>
-                        <button onClick = {() => printChangeBooking(bookings[i])}>Ändra bokning</button>
-                        {/* <ChangeBookingDiv>
-                            <h3>Ändra bokningen: </h3>
-                            <span>Antal gäster: {numberOfGuests}</span>
-                            <button onClick = {() => setNumberOfGuests(numberOfGuests +1)} disabled={disablePlus}>+</button>
-                            <button onClick = {() => setNumberOfGuests(numberOfGuests -1)} disabled={disableMinus}>-</button>
-                        </ChangeBookingDiv>
-
-                        <form>
+                        <button onClick = {() => printChangeBooking()}>Ändra bokning</button>
+                        
+                        {changeBookingAdmin && <div>
                             <ChangeBookingDiv>
-                                <label htmlFor="date"> Datum: </label>
-                                <input type="date" name="date" onChange={handleInput}/>
+                                <h3>Ändra bokningen: </h3>
+                                <span>Antal gäster: {numberOfGuests}</span>
+                                <button onClick = {() => setNumberOfGuests(numberOfGuests +1)} disabled={disablePlus}>+</button>
+                                <button onClick = {() => setNumberOfGuests(numberOfGuests -1)} disabled={disableMinus}>-</button>
                             </ChangeBookingDiv>
 
-                            <ChangeBookingDiv>
-                                <label htmlFor="time"> Tid: </label>
-                                <input type="text" name="time" value={changeBooking.time} onChange={handleInput}/>
-                            </ChangeBookingDiv>
-                        </form>
+                            <form>
+                                <ChangeBookingDiv>
+                                    <label htmlFor="date"> Datum: </label>
+                                    <input type="date" name="date" onChange={handleInput}/>
+                                </ChangeBookingDiv>
 
-                        <ChangeBookingDiv>
-                            <button onClick = {() => adminChangeBooking(bookings[i]._id, bookings[i].customerId)}>Ändra bokning</button>
-                        </ChangeBookingDiv> */}
+                                <ChangeBookingDiv>
+                                    <label htmlFor="time"> Tid: </label>
+                                    <input type="text" name="time" value={changeBooking.time} onChange={handleInput}/>
+                                </ChangeBookingDiv>
+                            </form>
+
+                            <ChangeBookingDiv>
+                                <button onClick = {() => adminChangeBooking(bookings[i]._id, bookings[i].customerId)}>Ändra bokning</button>
+                            </ChangeBookingDiv>
+                        </div>}
 
                     </BookingDiv> 
                 )
@@ -180,78 +183,11 @@ export function Admin() {
     })
 
 
+    // Vid tryck på Ändra boknings-knappen, togglar om rutan ska visas eller ej
+    function printChangeBooking() {
 
-    function printChangeBooking(booking: IGetBooking) {
-
-        ableChangeBooking.push(booking);
-
-        setChangeBookingAdmin(true)
+        setChangeBookingAdmin(!changeBookingAdmin)
     };
-
-    let ableChange =
-    <></>
-    if (changeBookingAdmin) {
-        for (let i = 0; i < bookings.length; i++) {
-            ableChange = 
-            <div> 
-                <ChangeBookingDiv>
-                    <h3>Ändra bokningen: </h3>
-                    <span>Antal gäster: {numberOfGuests}</span>
-                    <button onClick = {() => setNumberOfGuests(numberOfGuests +1)} disabled={disablePlus}>+</button>
-                    <button onClick = {() => setNumberOfGuests(numberOfGuests -1)} disabled={disableMinus}>-</button>
-                </ChangeBookingDiv>
-    
-                <form>
-                    <ChangeBookingDiv>
-                        <label htmlFor="date"> Datum: </label>
-                        <input type="date" name="date" onChange={handleInput}/>
-                    </ChangeBookingDiv>
-    
-                    <ChangeBookingDiv>
-                        <label htmlFor="time"> Tid: </label>
-                        <input type="text" name="time" value={changeBooking.time} onChange={handleInput}/>
-                    </ChangeBookingDiv>
-                </form>
-    
-                <ChangeBookingDiv>
-                    <button onClick = {() => adminChangeBooking(bookings[i]._id, bookings[i].customerId)}>Bekräfta ändring</button>
-                </ChangeBookingDiv>
-            </div>
-        }
-    };
-
-    // let changeBookingAsAdmin = ableChangeBooking.map((change) => {
-    //     <></>
-    //     if (changeBookingAdmin) {
-    //         changeBookingAsAdmin = 
-          
-    //         <>
-    //              <ChangeBookingDiv>
-    //                 <h3>Ändra bokningen: </h3>
-    //                 <span>Antal gäster: {numberOfGuests}</span>
-    //                 <button onClick = {() => setNumberOfGuests(numberOfGuests +1)} disabled={disablePlus}>+</button>
-    //                 <button onClick = {() => setNumberOfGuests(numberOfGuests -1)} disabled={disableMinus}>-</button>
-    //             </ChangeBookingDiv>
-    
-    //             <form>
-    //                 <ChangeBookingDiv>
-    //                     <label htmlFor="date"> Datum: </label>
-    //                     <input type="date" name="date" onChange={handleInput}/>
-    //                 </ChangeBookingDiv>
-    
-    //                 <ChangeBookingDiv>
-    //                     <label htmlFor="time"> Tid: </label>
-    //                     <input type="text" name="time" value={changeBooking.time} onChange={handleInput}/>
-    //                 </ChangeBookingDiv>
-    //             </form>
-    
-    //             <ChangeBookingDiv>
-    //                 <button onClick = {() => adminChangeBooking(change._id, change.customerId)}>Bekräfta ändring</button>
-    //             </ChangeBookingDiv>
-    //         </>
- 
-    //     }
-    // });
 
 
     // let booking = bookings.map((booking: IGetBooking) => {
@@ -293,7 +229,7 @@ export function Admin() {
         <section>
             <div> 
                 {customer}
-                {ableChange}
+                {/* {ableChange} */}
                 {/* {changeBookingAsAdmin} */}
             </div>
             <button onClick={checkCustomerArray}>Click</button>
