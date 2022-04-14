@@ -36,11 +36,23 @@ export const SubmitButton = styled.button`
 `;
 
 export const PlusMinusButton = styled.button`
-    background-color: #eeeaea;
-    color: black;
-    padding: 1%;
-    border-radius: 8px;
+    background-color: black;
+    color: white;
+    border: 2px solid white;
+    line-height: 0;
+    font-size: 1.3rem;    
+    padding: 0;
+    border-radius: 50%;
     width: 38px;
+    aspect-ratio: 1/1;
+
+    &:hover {
+        border: 3px solid white;
+    }
+    &:active {
+        border: 3px solid gray;
+        color: gray;
+    }
     @media screen and (min-width: 1024px) {
         font-size: 1.1rem;
         padding: 0.5%;

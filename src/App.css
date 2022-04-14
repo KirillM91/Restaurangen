@@ -26,17 +26,18 @@
     margin-right: 4%;
 }
 
-.layout-header .layout-logotype {    
+.layout-header .layout-logotype { 
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; 
+    font-weight: bold;  
     display: inline-block;
-    font-size: 1.8rem;
-    
+    font-size: 1.8rem;    
 }
 
 .layout-header .layout-logotype .layout-logotype-fire {
     color: rgb(255, 81, 0);
     /* Förlag på mörkare röd färg */
     /* color: #a80b04; */
-    padding-right: 1%;
+    /* padding-right: 1%; */
 }
 
 .layout-header .layout-nav-wrapper{    

@@ -61,11 +61,11 @@ export function Admin() {
 
     //Uppdaterar renderingen av antalet gäster samt uppdaterar numberOfGuests i changeBooking
     useEffect(() => {
-        if (numberOfGuests >= 6) {
-            setDisablePlus(true);
-        } else {
-            setDisablePlus(false);
-        };
+        // if (numberOfGuests >= 6) {
+        //     setDisablePlus(true);
+        // } else {
+        //     setDisablePlus(false);
+        // };
 
         if (numberOfGuests <= 1) {
             setDisableMinus(true);
@@ -166,8 +166,9 @@ export function Admin() {
                 
                         {/* <p>KundId: {bookings[i].customerId}</p> */}
                         <p>Datum: {bookings[i].date}</p>
-                        {bookings[i].numberOfGuests <= 6 && <p>Antal personer: {bookings[i].numberOfGuests}</p>}
-                        {bookings[i].numberOfGuests > 6 && <NrOfGuests>Antal personer: {bookings[i].numberOfGuests}</NrOfGuests>}
+                        <p>Antal personer: {bookings[i].numberOfGuests}</p>
+                        {/* {bookings[i].numberOfGuests <= 6 && <p>Antal personer: {bookings[i].numberOfGuests}</p>}
+                        {bookings[i].numberOfGuests > 6 && <NrOfGuests>Antal personer: {bookings[i].numberOfGuests}</NrOfGuests>} */}
                         {/* <p>RestaurangId: {bookings[i].restaurantId}</p> */}
                         <p>Bokad tid: {bookings[i].time}</p> 
                         <br></br>

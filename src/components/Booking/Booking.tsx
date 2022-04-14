@@ -1,5 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { IError } from "../../models/IError";
 import { IPostBooking } from "../../models/IPostBooking";
 import { IPostCustomer } from "../../models/IPostCustomer";
 import { Itouched } from "../../models/ITouched";
@@ -21,6 +22,14 @@ export function Booking() {
     const [confirmGDPR, setConfirmGDPR] = useState(false);
     const [disableSubmitInput, setDisableSubmitInput] = useState(true);
     const [confirmation, setConfirmation] = useState(false);
+
+    // const [numberOfTables, setNumberOfTables] = useState({
+    //     at18: 0,
+    //     at21: 0
+    // })
+    const [numberOfTables18, setNumberOfTables18] = useState(0)
+    const [numberOfTables21, setNumberOfTables21] = useState(0)
+
 
     //Används för att kolla om användaren har varit inne i fältet 
     //och ger ett felmedelande först när användaren har lämnat fältet
@@ -47,7 +56,7 @@ export function Booking() {
     });
 
     //Approved, för att kolla om fältet är korrekt ifyllt andvänds sen som en condition för att enable'a submit knappen
-    const [error, setError] = useState({
+    const [error, setError] = useState<IError>({
         nameError: {
             name: "",
             approved: false
@@ -132,13 +141,9 @@ export function Booking() {
 
     //Skapar en post request med en ny bokning
     function submitBooking(){
-
-        if (numberOfGuests <= 6) {
+     
             PostNewBooking(newBooking);
-        } else {
-            PostNewBooking(newBooking);
-            PostNewBooking(newBooking);
-        }
+        
         setBookingOk(true);     
         setConfirmation(true);   
     };
@@ -166,11 +171,24 @@ export function Booking() {
 
     //Uppdaterar renderingen av antalet gäster samt uppdaterar numberOfGuests i newBooking
     useEffect(() => {
-        if (numberOfGuests >= 12) {
-            setDisablePlus(true);
-        } else {
-            setDisablePlus(false);
-        };
+        let x18 = 15-numberOfTables18
+        let x21 = 15-numberOfTables21
+
+        if(newBooking.time === "18:00") {
+            if(numberOfTables18 >= x18 && numberOfGuests === 6*x18) {
+                setDisablePlus(true);    
+            } else {
+                setDisablePlus(false);
+            };
+
+        } 
+        else if(newBooking.time === "21:00") {
+            if(numberOfTables21 >= x21 && numberOfGuests === 6*x21) {
+                setDisablePlus(true);    
+            } else {
+                setDisablePlus(false);
+            };
+        }
 
         if (numberOfGuests <= 1) {
             setDisableMinus(true);
@@ -184,15 +202,32 @@ export function Booking() {
 
     // Tar emot värde från CheckAvailability
     function childToParentDate(childDataDate: string) {
-        console.log(childDataDate);
+        console.log("asd", childDataDate);
         setNewBooking({...newBooking, date: childDataDate});
     };
 
     function childToParentTime(childDataTime: string) {
-        console.log(childDataTime);
+        console.log("time ", childDataTime);
         setNewBooking({...newBooking, time: childDataTime});
         setDisableInput(false);
     };
+
+    function childToParentTables18(childDataTables18: number) {
+        console.log("child data 18", childDataTables18)
+        console.log("number of tables in parent 18", numberOfTables18);
+        setNumberOfTables18(childDataTables18);
+    }
+
+    function childToParentTables21(childDataTables21: number) {
+        console.log("child data 21", childDataTables21)
+        console.log("number of tables in parent 21", numberOfTables21);
+        setNumberOfTables21(childDataTables21);
+    }
+
+    function resetNumberOfGuests(childData: number) {
+        setNumberOfGuests(childData)
+    }
+
 
     // Om bokning är genomförd ska bekräftelse visas
     let bookingDone = 
@@ -214,19 +249,26 @@ export function Booking() {
         makeBooking = 
         <div>          
             <PaddingDiv>
-                <CheckAvailability childToParentDate={childToParentDate} childToParentTime={childToParentTime}></CheckAvailability>
+                <CheckAvailability 
+                    resetNumberOfGuests={resetNumberOfGuests}
+                    childToParentDate={childToParentDate} 
+                    childToParentTime={childToParentTime}
+                    childToParentTables18={childToParentTables18}
+                    childToParentTables21={childToParentTables21}
+                ></CheckAvailability>
             </PaddingDiv>  
-
+                
             <BorderDiv>
                 <p>Antal gäster: {numberOfGuests}</p>
-                <PlusMinusButton onClick = {() => setNumberOfGuests(numberOfGuests +1)} disabled={disablePlus}>+</PlusMinusButton>
-                <PlusMinusButton onClick = {() => setNumberOfGuests(numberOfGuests -1)} disabled={disableMinus}>-</PlusMinusButton>
+                <PlusMinusButton onClick = {() => setNumberOfGuests(numberOfGuests +1)} disabled={disablePlus || disableInput}>+</PlusMinusButton>
+                <PlusMinusButton onClick = {() => setNumberOfGuests(numberOfGuests -1)} disabled={disableMinus || disableInput}>-</PlusMinusButton>
             </BorderDiv>
 
             <form>
                 <label htmlFor="name"> Namn: </label>
                 <FormInput
-                    fname={touched.fname}                    
+                    approved={error.nameError.approved}
+                    touched={touched.fname!}                    
                     disabled={disableInput} 
                     type="text" 
                     name="name" 
@@ -239,7 +281,8 @@ export function Booking() {
                 
                 <label htmlFor="lastname"> Efternamn: </label>
                 <FormInput 
-                    lastname={touched.lastname} 
+                    approved={error.lastnameError.approved} 
+                    touched={touched.lastname!}
                     disabled={disableInput} 
                     type="text" 
                     name="lastname" 
@@ -252,7 +295,8 @@ export function Booking() {
 
                 <label htmlFor="email"> E-post: </label>
                 <FormInput
-                    email={touched.email}
+                    approved={error.emailError.approved}
+                    touched={touched.email!}
                     disabled={disableInput} 
                     type="text" 
                     name="email" 
@@ -265,7 +309,8 @@ export function Booking() {
 
                 <label htmlFor="phone"> Telefon nr: </label>
                 <FormInput
-                    phone={touched.phone}
+                    approved={error.phoneError.approved}
+                    touched={touched.phone!}
                     disabled={disableInput} 
                     type="text" 
                     name="phone" 
