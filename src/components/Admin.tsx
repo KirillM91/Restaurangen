@@ -6,8 +6,10 @@ import { updateBooking } from "../services/ChangeBookingService";
 import { deleteBooking } from "../services/DeleteBookingService";
 import { GetBookingsService } from "../services/GetBookingsService";
 import { GetCustomerService } from "../services/GetCustomerService";
-import { DeleteButton } from "./styled-components/Buttons";
-import { BookingDiv, ChangeBookingDiv } from "./styled-components/Divs";
+import { ChangeButton, DeleteButton } from "./styled-components/Buttons";
+import { BookingDiv, BorderBookingDiv, ChangeBookingDiv, TransparentDiv } from "./styled-components/Divs";
+import { H2, H3 } from "./styled-components/Headings";
+import { NrOfGuests, WordBreakOK } from "./styled-components/Paragraf";
 
 export function Admin() {
     
@@ -17,8 +19,7 @@ export function Admin() {
     const [disablePlus, setDisablePlus] = useState(false);
     const [disableMinus, setDisableMinus] = useState(false);
     const [changeBookingAdmin, setChangeBookingAdmin] = useState<null | number>();
-
-    let ableChangeBooking: string[] = [];
+    const [updateConfirmation, setUpdateConfirmation] = useState(false);
 
     const [changeBooking, setChangeBooking] = useState<ChangeBooking>({    
         date: "",
@@ -30,10 +31,6 @@ export function Admin() {
     let service = new GetBookingsService();
     let customerService = new GetCustomerService();
 
-    // useEffect(() => {
-
-    // }, [changeBookingAdmin]);
-
     useEffect(() => {
 
         service.getBookings()
@@ -41,7 +38,7 @@ export function Admin() {
             setBookings(bookingsResponse);
             console.log("Bokningar:", bookingsResponse)
         }) 
-    }, []);
+    }, [updateConfirmation]);
 
     
     useEffect(() => {  
@@ -123,65 +120,12 @@ export function Admin() {
 
     // När "Ändra bokning" klickas på. Kör put-funktion i service
     function adminChangeBooking(bookingId: string, customerId: string) {
-        
+    
         updateBooking(bookingId, changeBooking, customerId);
+
+
+        setUpdateConfirmation(true);
     };
-
-      
-
-    let customer = customers.map((customer: IGetCustomer, j: number) => {
-
-        for (let i = 0; i < bookings.length; i++) {
-        // bookings.map((booking: IGetBooking) => {
-            if (customer._id === bookings[i].customerId) {
-                return ( 
-                    <BookingDiv key={j}>
-                        <h3>KundId: {customer._id}</h3>
-                        <p>Förnamn: {customer.name}</p>
-                        <p>Efternamn: {customer.lastname}</p>
-                        <p>Telnr: {customer.phone}</p>
-                        <p>E-mail: {customer.email}</p>
-                 
-                        {/* <p>KundId: {bookings[i].customerId}</p> */}
-                        <p>Datum: {bookings[i].date}</p>
-                        <p>BokningsId: {bookings[i]._id}</p>
-                        <p>Antal personer: {bookings[i].numberOfGuests}</p>
-                        {/* <p>RestaurangId: {bookings[i].restaurantId}</p> */}
-                        <p>Bokad tid: {bookings[i].time}</p>
-                        <DeleteButton onClick = {() => adminDeleteBooking(bookings[i]._id, customer._id)}>Ta bort bokning</DeleteButton>
-                        <button onClick = {() => printChangeBooking(j)}>Ändra bokning</button>
-                        
-                        {changeBookingAdmin === j && <div>
-                            <ChangeBookingDiv>
-                                <h3>Ändra bokningen: </h3>
-                                <span>Antal gäster: {numberOfGuests}</span>
-                                <button onClick = {() => setNumberOfGuests(numberOfGuests +1)} disabled={disablePlus}>+</button>
-                                <button onClick = {() => setNumberOfGuests(numberOfGuests -1)} disabled={disableMinus}>-</button>
-                            </ChangeBookingDiv>
-
-                            <form>
-                                <ChangeBookingDiv>
-                                    <label htmlFor="date"> Datum: </label>
-                                    <input type="date" name="date" onChange={handleInput}/>
-                                </ChangeBookingDiv>
-
-                                <ChangeBookingDiv>
-                                    <label htmlFor="time"> Tid: </label>
-                                    <input type="text" name="time" value={changeBooking.time} onChange={handleInput}/>
-                                </ChangeBookingDiv>
-                            </form>
-
-                            <ChangeBookingDiv>
-                                <button onClick = {() => adminChangeBooking(bookings[i]._id, bookings[i].customerId)}>Ändra bokning</button>
-                            </ChangeBookingDiv>
-                        </div>}
-
-                    </BookingDiv> 
-                )
-            } 
-        }
-    })
-
 
     // Vid tryck på Ändra boknings-knappen, togglar om rutan ska visas eller ej
     function printChangeBooking(j:number) {
@@ -191,49 +135,100 @@ export function Admin() {
         console.log(j)
     };
 
+    // Om bokning är genomförd ska bekräftelse visas
+    let updateDone = 
+    <></>
+    if (updateConfirmation) {
+        updateDone =
+        <TransparentDiv>
+            <H3>Bokningen är nu uppdaterad.</H3>
+            <br></br>
+            <H3></H3>
+            <br></br>
+            <button onClick = {() => setUpdateConfirmation(false)}>Se alla bokningar</button>
+        </TransparentDiv>
+    };
 
-    // let booking = bookings.map((booking: IGetBooking) => {
-    //     customers.map((customer: IGetCustomer, i: number) => {
-    //     return( 
-    //     <div key={booking._id}>
-    //         <h1>{customer.name}</h1>
-    //         <h3>Booking id: {booking._id}</h3>
-    //         <p>Customer id: {booking.customerId}</p>
-    //         <p>Number of guests: {booking.numberOfGuests}</p>
-    //         <p>Date: {booking.date}</p>
-    //         <p>Time: {booking.time}</p>
-
-    //         {/* customers.map((customer: IGetCustomer) => {
-      
-    //     <div>
-    //         <h3>Customer Id: {customer._id}</h3>
-    //         <p>Name: {customer.name}</p>
-    //         <p>Lastname: {customer.lastname}</p>
-    //         <p>Phone: {customer.phone}</p>
-    //         <p>E-Mail: {customer.email}</p>
-    //     </div>
-
-    // }) */}
+    // Skriva ut bokningarna
+    let customer = customers.map((customer: IGetCustomer, j: number) => {
+        for (let i = 0; i < bookings.length; i++) {
+            if (customer._id === bookings[i].customerId) {
+                return ( 
+                    <BookingDiv key={j}>
+                        <WordBreakOK>KundId: {customer._id}</WordBreakOK> 
+                        <br></br>
+                        <p>Förnamn: {customer.name}</p> 
+                        <p>Efternamn: {customer.lastname}</p> 
+                        <br></br>
+                        <p>Telnr: {customer.phone}</p>
+                        <WordBreakOK>E-mail: {customer.email}</WordBreakOK> 
+                        <br></br>
+                
+                        {/* <p>KundId: {bookings[i].customerId}</p> */}
+                        <p>Datum: {bookings[i].date}</p>
+                        {bookings[i].numberOfGuests <= 6 && <p>Antal personer: {bookings[i].numberOfGuests}</p>}
+                        {bookings[i].numberOfGuests > 6 && <NrOfGuests>Antal personer: {bookings[i].numberOfGuests}</NrOfGuests>}
+                        {/* <p>RestaurangId: {bookings[i].restaurantId}</p> */}
+                        <p>Bokad tid: {bookings[i].time}</p> 
+                        <br></br>
+                        <WordBreakOK>BokningsId: {bookings[i]._id}</WordBreakOK> 
+                        <br></br>
+                        <ChangeButton onClick = {() => printChangeBooking(j)}> Ändra bokning </ChangeButton>
+                        <br></br>
+                        <DeleteButton onClick = {() => adminDeleteBooking(bookings[i]._id, customer._id)}>Ta bort bokning</DeleteButton>
+                    
+                        {changeBookingAdmin === j && <div>
+                            <ChangeBookingDiv>
+                                <h3>Ändra bokningen: </h3>
+                                <span>Antal gäster: {numberOfGuests}</span>
+                                <button onClick = {() => setNumberOfGuests(numberOfGuests +1)} disabled={disablePlus}>+</button>
+                                <button onClick = {() => setNumberOfGuests(numberOfGuests -1)} disabled={disableMinus}>-</button>
+                            </ChangeBookingDiv>
         
+                            <form>
+                                <ChangeBookingDiv>
+                                    <label htmlFor="date"> Datum: </label>
+                                    <input type="date" name="date" onChange={handleInput}/>
+                                </ChangeBookingDiv>
+        
+                                <ChangeBookingDiv>
+                                    <label htmlFor="time"> Tid: </label>
+                                    <input type="text" name="time" value={changeBooking.time} onChange={handleInput}/>                                    </ChangeBookingDiv>
+                            </form>
+        
+                            <ChangeBookingDiv>
+                                <button onClick = {() => adminChangeBooking(bookings[i]._id, bookings[i].customerId)}>Ändra bokning</button>
+                            </ChangeBookingDiv>
+                        </div>}
+                    </BookingDiv> 
+                )
+            } 
+        }
+    });
 
-    //         {/* <h2>{booking.customerId}</h2>
-    //         <h2>{booking.date}</h2>
-    //         <h2>{booking.id}</h2>
-    //         <h2>{booking.numberOfGuests}</h2>
-    //         <h2>{booking.restaurantId}</h2>
-    //         <h2>{booking.time}</h2> */}
-    //     </div>
-    //     )
-    //     })
-    // })
+    // Visa alla bokningar om ändring av bokning ej är genomförd
+    let bookingView = 
+    <></>
+    if (!updateConfirmation) {
+        bookingView = 
+        <>
+            {customer}
+        </>        
+    }
 
     return(
         <section>
-            <div> 
-                {customer}
-                {/* {ableChange} */}
-                {/* {changeBookingAsAdmin} */}
-            </div>
+            <H2>Admin</H2>
+            <TransparentDiv>
+                OBS! Om en kund har en bokning och vill ändra till fler än sex personer 
+                så behöver en avbokning göras för att sedan göra en ny bokning på bokningssidan.
+            </TransparentDiv>
+            <br></br>
+            <BorderBookingDiv> 
+                <H3>Bokningar</H3>
+                {bookingView}
+                {updateDone}
+            </BorderBookingDiv>
             <button onClick={checkCustomerArray}>Click</button>
         </section>
     );

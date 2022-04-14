@@ -16,7 +16,7 @@ body {
 
 main {
     width: 100vw;
-    min-height: 87vh;
+    min-height: 85vh;
     max-height: fit-content;
     padding: 1%;
     margin: 0;
@@ -25,18 +25,11 @@ main {
 }
 
 footer {
-    width: 100vw;
+    width: 92%;
     height: 5vh;
-    background-color: rgba(255, 255, 255, 0.027);
+    background-color: black;
     padding: 1%;
     border-top: solid 1px white;
-}
-
-@media screen and (min-width: 1200px) {
-    footer {
-        margin: 0 auto;
-        margin-left: 4%;
-        margin-right: 4%;
-        width: 92%;
-    }
+    margin-left: 4%;
+    margin-right: 4%;
 }

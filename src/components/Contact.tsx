@@ -83,7 +83,7 @@ export function Contact() {
                 <H4>E-mail: kitchenonfire@restaurang.se</H4>
             </PaddingDiv>
 
-            <img id="chiliFlamesImg" src={require("../assets/chili-flames.jpg")} alt="red-chili-in-flames"/>
+            <img id="muffinFireImg" src={require("../assets/muffin-fire.jpg")} alt="red-chili-in-flames"/>
 
             <PaddingDiv>
                 <H3>Hitta hit</H3>
@@ -104,6 +104,7 @@ export function Contact() {
                     name="bookingId" 
                     onBlur={() => setTouched({...touched, bookingIdNr: true})} 
                 />
+                <p>Har du bokat för fler än sex personer? Vänligen ring oss för avbokning.</p>
                 <button disabled={disableSubmitInput} onClick = {() => customerDeleteBooking(bookingId)}>Avboka</button>
                 {bookingCancelled}
                 {touched.bookingIdNr && <p>{error.bookingIdError.bookingIdNr}</p>}

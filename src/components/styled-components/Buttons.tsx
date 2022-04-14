@@ -1,9 +1,21 @@
 import styled from "styled-components";
 
 export const DeleteButton = styled.button`
-    background-color: #850e0e;
+    background-color: #a80b04;
     color: white;
     padding: 1%;
+    @media screen and (min-width: 1024px) {
+        padding: 0.5%;
+    }
+`;
+
+export const ChangeButton = styled.button`
+    background-color: #d3cccc;
+    color: black;
+    padding: 1%;
+    @media screen and (min-width: 1024px) {
+        padding: 0.5%;
+    }
 `;
 
 export const TimeButton = styled.button`
@@ -11,6 +23,9 @@ export const TimeButton = styled.button`
     color: black;
     padding: 4%;
     border-radius: 8px;
+    @media screen and (min-width: 1024px) {
+        padding: 1%;
+    }
 `;
 
 export const SubmitButton = styled.button`
@@ -26,7 +41,7 @@ export const PlusMinusButton = styled.button`
     padding: 1%;
     border-radius: 8px;
     width: 38px;
-    @media screen and (min-width: 1200px) {
+    @media screen and (min-width: 1024px) {
         font-size: 1.1rem;
         padding: 0.5%;
     }
