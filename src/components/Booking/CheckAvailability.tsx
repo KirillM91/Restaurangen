@@ -5,7 +5,9 @@ import { GetBooking } from "../../models/GetBooking";
 // import { IPostBooking } from "../../models/IPostBooking";
 import { GetBookingsService } from "../../services/GetBookingsService";
 import { TimeButton } from "../styled-components/Buttons";
-import { TransparentDiv } from "../styled-components/Divs";
+import { TimeDiv, TransparentDiv } from "../styled-components/Divs";
+import Calendar from "react-calendar";
+import DatePicker from 'sassy-datepicker';
 
 interface IChildToParentProps {
     childToParentDate(newBookingDate: string): void;
@@ -16,10 +18,12 @@ export function CheckAvailability(props: IChildToParentProps) {
 
     const [pickedDate, setPickedDate] = useState("");
     const [bookings, setBookings] = useState<GetBooking[]>([]);
-
     const [timeTaken18, setTimeTaken18] = useState(true);
     const [timeTaken21, setTimeTaken21] = useState(true);
     const [pickedTime, setPickedTime] = useState("");
+    // const [valueDate, setValueDate] = useState(new Date());
+    // const [pickedTime, setPickedTime] = useState(new Date().toString())
+
 
     let timeList18: GetBooking[] = [];
     let timeList21: GetBooking[] = [];
@@ -128,14 +132,20 @@ export function CheckAvailability(props: IChildToParentProps) {
         <div>
             {/* <p>CheckAvailability</p> */}
             <label htmlFor="date"> Välj datum: </label>
-            <input type="date" onChange={handleChange} value={pickedDate} name="date"></input>
+            <input type="date" min={"2022-04-14"} onChange={handleChange} value={pickedDate} name="date"></input>
+            {/* <Calendar onChange={setValueDate} value={valueDate} /> */}
             {/* <button onClick={checkDate} >Se tillgänglighet</button> */}
-            <TransparentDiv>
+            {/* <DatePicker onChange={handleChange} value={pickedDate}></DatePicker> */}
+            <TimeDiv>
                 {!timeTaken18 && <TimeButton onClick={chooseTime18}>Kl. 18</TimeButton>}
                 {!timeTaken21 && <TimeButton onClick={chooseTime21}>Kl. 21</TimeButton>}
                 {timeTaken18 && <button disabled>Kl. 18</button>}
                 {timeTaken21 && <button disabled>Kl. 21</button>}
-            </TransparentDiv>
+            </TimeDiv>
         </div>
     );
 };
+
+// https://www.npmjs.com/package/react-calendar
+// om vi vill läsa mer om calender i React (är installerat)
+// https://reactjsexample.com/beautiful-minimal-and-accessible-date-picker-for-react/

@@ -1,15 +1,14 @@
 import { ChangeEvent, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { IPostBooking } from "../../models/IPostBooking";
 import { IPostCustomer } from "../../models/IPostCustomer";
 import { Itouched } from "../../models/ITouched";
 import { PostNewBooking } from "../../services/PostNewBooking";
 import { PlusMinusButton } from "../styled-components/Buttons";
-import { BorderDiv, PaddingDiv, WrongInputDiv } from "../styled-components/Divs";
+import { BorderDiv, PaddingDiv, TransparentDiv, WrongInputDiv } from "../styled-components/Divs";
 import { FormInput } from "../styled-components/Forms";
+import { H2, H3, H4 } from "../styled-components/Headings";
 import { CheckAvailability } from "./CheckAvailability";
-
-
-
 
 export function Booking() {
 
@@ -20,7 +19,8 @@ export function Booking() {
     const [disableInput, setDisableInput] = useState(true);
     const [bookingOk, setBookingOk] = useState(false);
     const [confirmGDPR, setConfirmGDPR] = useState(false);
-    const [disableSubmitInput, setDisableSubmitInput] = useState(true)
+    const [disableSubmitInput, setDisableSubmitInput] = useState(true);
+    const [confirmation, setConfirmation] = useState(false);
 
     //Används för att kolla om användaren har varit inne i fältet 
     //och ger ett felmedelande först när användaren har lämnat fältet
@@ -132,8 +132,15 @@ export function Booking() {
 
     //Skapar en post request med en ny bokning
     function submitBooking(){
-        PostNewBooking(newBooking);
-        setBookingOk(true);        
+
+        if (numberOfGuests <= 6) {
+            PostNewBooking(newBooking);
+        } else {
+            PostNewBooking(newBooking);
+            PostNewBooking(newBooking);
+        }
+        setBookingOk(true);     
+        setConfirmation(true);   
     };
 
     //Kollar om alla fält är korrekt ifyllda och att GDPR boxen är intryckt, innan användaren kan skicka bokningen
@@ -159,7 +166,7 @@ export function Booking() {
 
     //Uppdaterar renderingen av antalet gäster samt uppdaterar numberOfGuests i newBooking
     useEffect(() => {
-        if (numberOfGuests >= 6) {
+        if (numberOfGuests >= 12) {
             setDisablePlus(true);
         } else {
             setDisablePlus(false);
@@ -190,15 +197,21 @@ export function Booking() {
     // Om bokning är genomförd ska bekräftelse visas
     let bookingDone = 
     <></>
-    if (bookingOk) {
+    if (confirmation) {
         bookingDone =
-        <div>
-            <p>Din bokning har nu genomförts. Vi ser fram emot ditt besök!</p>
-            <p>En bekräftelse har sänts via mail.</p>
-        </div>
+        <TransparentDiv>
+            <H3>Din bokning har nu genomförts. Vi ser fram emot ditt besök!</H3>
+            <br></br>
+            <H3>En bekräftelse har sänts via mail.</H3>
+            <br></br>
+            <H4><Link to="/"> Gå till förstasidan</Link></H4>
+        </TransparentDiv>
     };
 
-    return(
+    let makeBooking = 
+        <></>
+    if (!confirmation) {
+        makeBooking = 
         <div>          
             <PaddingDiv>
                 <CheckAvailability childToParentDate={childToParentDate} childToParentTime={childToParentTime}></CheckAvailability>
@@ -282,7 +295,100 @@ export function Booking() {
 
             <button disabled={disableSubmitInput} onClick={submitBooking}>Boka bord</button>
             
-            {bookingDone}
+            {/* {bookingDone} */}
         </div>
+    } 
+
+    return(
+        <>
+            {makeBooking}
+            {bookingDone}
+        </>
+        
+        // <div>          
+        //     <PaddingDiv>
+        //         <CheckAvailability childToParentDate={childToParentDate} childToParentTime={childToParentTime}></CheckAvailability>
+        //     </PaddingDiv>  
+
+        //     <BorderDiv>
+        //         <p>Antal gäster: {numberOfGuests}</p>
+        //         <PlusMinusButton onClick = {() => setNumberOfGuests(numberOfGuests +1)} disabled={disablePlus}>+</PlusMinusButton>
+        //         <PlusMinusButton onClick = {() => setNumberOfGuests(numberOfGuests -1)} disabled={disableMinus}>-</PlusMinusButton>
+        //     </BorderDiv>
+
+        //     <form>
+        //         <label htmlFor="name"> Namn: </label>
+        //         <FormInput
+        //             fname={touched.fname}                    
+        //             disabled={disableInput} 
+        //             type="text" 
+        //             name="name" 
+        //             onChange={handleChange} 
+        //             value={customer.name} 
+        //             id="name"
+        //             onBlur={() => setTouched({...touched, fname: true})}                 
+        //         /> 
+        //         <br/>
+                
+        //         <label htmlFor="lastname"> Efternamn: </label>
+        //         <FormInput 
+        //             lastname={touched.lastname} 
+        //             disabled={disableInput} 
+        //             type="text" 
+        //             name="lastname" 
+        //             onChange={handleChange} 
+        //             value={customer.lastname} 
+        //             id="lastname"
+        //             onBlur={() => setTouched({...touched, lastname: true})} 
+        //         />
+        //         <br/>
+
+        //         <label htmlFor="email"> E-post: </label>
+        //         <FormInput
+        //             email={touched.email}
+        //             disabled={disableInput} 
+        //             type="text" 
+        //             name="email" 
+        //             onChange={handleChange} 
+        //             value={customer.email} 
+        //             id="email"
+        //             onBlur={() => setTouched({...touched, email: true})} 
+        //         />
+        //         <br/>
+
+        //         <label htmlFor="phone"> Telefon nr: </label>
+        //         <FormInput
+        //             phone={touched.phone}
+        //             disabled={disableInput} 
+        //             type="text" 
+        //             name="phone" 
+        //             onChange={handleChange} 
+        //             value={customer.phone} 
+        //             id="phone"
+        //             onBlur={() => setTouched({...touched, phone: true})} 
+        //         />
+        //         <br/>
+                
+        //         <input 
+        //             type="checkbox"
+        //             id="GDPRcheckbox"                    
+        //             onClick={() => setConfirmGDPR(!confirmGDPR)}
+        //         />
+        //         <label id="labelGDPRcheckbox" htmlFor="GDPRcheckbox">Jag godkänner Kitchen on Fires-villkor för personuppgiftshantering (GDPR)</label>
+        //         <br/>
+                
+        //     </form>
+
+        //     <WrongInputDiv>
+        //         {touched.fname && <p>{error.nameError.name}</p>}
+        //         {touched.lastname && <p>{error.lastnameError.lastname}</p>}
+        //         {touched.email && <p>{error.emailError.email}</p>}
+        //         {touched.phone && <p>{error.phoneError.phone}</p>}
+        //     </WrongInputDiv>
+
+        //     <button disabled={disableSubmitInput} onClick={submitBooking}>Boka bord</button>
+            
+        //     {bookingDone}
+        // </div>
     );
 };
