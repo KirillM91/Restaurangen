@@ -12,6 +12,9 @@ import DatePicker from 'sassy-datepicker';
 interface IChildToParentProps {
     childToParentDate(newBookingDate: string): void;
     childToParentTime(newBookingTime: string): void;
+    childToParentTables18(newTables18: number): void;
+    childToParentTables21(newTables21: number): void;
+    resetNumberOfGuests(newValue: number): void;
 }
 
 export function CheckAvailability(props: IChildToParentProps) {
@@ -28,22 +31,28 @@ export function CheckAvailability(props: IChildToParentProps) {
     let timeList18: GetBooking[] = [];
     let timeList21: GetBooking[] = [];
 
+    let numberOfTables18 = []
+    let numberOfTables21 = []
+ 
+    let sumOfTables18: number;
+    let sumOfTables21: number;
+
     // Funktion som körs när inputfältet för datum ändras
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
 
-        props.childToParentDate(e.target.value);
+        props.childToParentDate(e.target.value);        
         setPickedDate(e.target.value);
+
+        props.resetNumberOfGuests(1)
 
         timeList18 = [];
         timeList21 = [];
-
-        console.log(pickedDate)
 
         let service = new GetBookingsService();
 
         service.getBookings()
         .then((bookingsResponse) => {
-
+            // let bookingsFromApi: GetBooking[] = []
             let bookingsFromApi = bookingsResponse.map((booking: GetBooking) => {
 
                 return new GetBooking (
@@ -56,52 +65,92 @@ export function CheckAvailability(props: IChildToParentProps) {
                 )
             })
         setBookings(bookingsFromApi);
+        console.log(bookingsFromApi);
 
-        if (bookingsFromApi <= 0) {
+
+        
+        //Om bookingsFromApi är helt tom enablas tid knappar
+        if (bookingsFromApi.length <= 0) {
             setTimeTaken18(false)
             setTimeTaken21(false)
         } else {
 
-            for (var booking in bookingsFromApi) {
+            //bookingsFromApi ej tom
+            for (var booking in bookingsFromApi) { 
+
+
+                //Kollar om det finns bokningar samma dag som vald datum
+                //Om inte enablas tid knappar
+                if (bookingsFromApi[booking].date === e.target.value) { 
                     
-                if (bookingsFromApi[booking].date === pickedDate) {
+                    //Kollar om det finns bokningar kl 18:00 samma dag som vald datum (Likadant för kl 21)
+                    //Om inte enablas tid knappar
+                    if (bookingsFromApi[booking].time === "18:00") {
+                        
+                        //Skickar in nummer av numberOfGuests till timeList array
+                        timeList18.push(bookingsFromApi[booking].numberOfGuests)
+                        //Omvandlar varje numberOfGuests till antal bord som behövs för det antalet gäster, 
+                        //genom att dela varje nummer med 6 och runda upp till heltal
+                        numberOfTables18 = timeList18.map(x => Math.ceil(+x/6) )
+                        //Summerar alla nummer i numberOfTables array för att få den totala summan av bokade bord                           
+                        sumOfTables18 = numberOfTables18.reduce((a, b) => {
+                            return a + b;
+                        }, 0);
 
-                    for (var time in bookingsFromApi[booking]) {
-
-                        if (bookingsFromApi[booking][time] === "18:00"){
-                            console.log("18:00");
-
-                            timeList18.push(bookingsFromApi[booking][time]);
-
-                            if (timeList18.length >= 15) {
-                                console.log("Det är fullbokat kl. 18 idag")
-                                setTimeTaken18(true)
-                                // return
-                            } else {
-                                console.log("Det går att boka kl. 18 idag")
-                                setTimeTaken18(false)
-                            }
+                        //SKickar antalet bor till Booking
+                        props.childToParentTables18(sumOfTables18);
+                        
+                        console.log("tables18", sumOfTables18)
+                        
+                        if (sumOfTables18 >= 15) {
+                            console.log("Det är fullbokat kl. 18 idag")
+                            setTimeTaken18(true)
+                            console.log("timeTaken18", timeTaken18);                            
+                            
+                        } else {
+                            console.log("Det går att boka kl. 18 idag")
+                            setTimeTaken18(false)
                         }
-                        if (bookingsFromApi[booking][time] === "21:00"){
-                            console.log("21:00")
-                                
-                            timeList21.push(bookingsFromApi[booking][time]);
-
-                            if (timeList21.length >= 15) {
-                                console.log("Det är fullbokat kl. 21 idag")
-                                setTimeTaken21(true)
-                                // return
-                            } else {
-                                console.log("Det går att boka kl. 21 idag")
-                                setTimeTaken21(false)
-                            }
-                        }
+                    } else {
+                        setTimeTaken18(false)
                     }
+                    
+                    //KL 21
+                    if (bookingsFromApi[booking].time === "21:00"){ 
+                        
+                        timeList21.push(bookingsFromApi[booking].numberOfGuests);
+                        numberOfTables21 = timeList21.map(x => Math.ceil(+x/6) )
+                        sumOfTables21 = numberOfTables21.reduce((a, b) => {
+                            return a + b;
+                        }, 0);
+
+                        props.childToParentTables21(sumOfTables21);
+                        
+                        console.log("tables21", sumOfTables21)
+
+                        if (sumOfTables21 >= 15) {
+                            console.log("Det är fullbokat kl. 21 idag")
+                            setTimeTaken21(true)
+                            console.log("timeTaken21", timeTaken21);
+                            
+                        } else {
+                            console.log("Det går att boka kl. 21 idag")
+                            setTimeTaken21(false)
+                        }
+
+                    } else {
+                        setTimeTaken21(false)
+                    } 
+
+                    //Kollar om det finns bokningar och om datumet är en tom sträng, isf disableas tids knappar                    
+                } else if (bookingsFromApi && e.target.value === "") {                    
+                        setTimeTaken18(true)
+                        setTimeTaken21(true)
+                    
                 } else {
                     console.log("Det finns ingen bokning idag. Du kan boka")
                     setTimeTaken18(false)
-                    setTimeTaken21(false)
-                    return
+                    setTimeTaken21(false)                    
                 }
             }
         };
@@ -118,6 +167,8 @@ export function CheckAvailability(props: IChildToParentProps) {
 
         props.childToParentTime("18:00");
         setPickedTime("18:00");
+
+        props.resetNumberOfGuests(1)  
     }
 
     // När klickat på kl. 21
@@ -126,10 +177,12 @@ export function CheckAvailability(props: IChildToParentProps) {
 
         props.childToParentTime("21:00");
         setPickedTime("21:00");
+
+        props.resetNumberOfGuests(1)   
     }
 
     return(
-        <div>
+        <div> 
             {/* <p>CheckAvailability</p> */}
             <label htmlFor="date"> Välj datum: </label>
             <input type="date" min={"2022-04-14"} onChange={handleChange} value={pickedDate} name="date"></input>
