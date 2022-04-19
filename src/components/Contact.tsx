@@ -9,8 +9,7 @@ export function Contact() {
     const [bookingCancel, setBookingCancel] = useState(false);
     const [disableSubmitInput, setDisableSubmitInput] = useState(true);
 
-    //Används för att kolla om användaren har varit inne i fältet 
-    //och ger ett felmedelande först när användaren har lämnat fältet
+    //Används för att kolla om användaren har markerat fältet
     const [touched, setTouched] = useState({
         bookingIdNr: false,
     });
@@ -37,7 +36,7 @@ export function Contact() {
         validation();   
     }, [bookingId]);
 
-    //Validerar input fälten och ger medelanden beroende på felet
+    //Validerar input fälten och ger meddelanden beroende på felet
     function validation() {               
 
         if (!bookingId.match(/^\S{24}$/)) {
@@ -80,7 +79,7 @@ export function Contact() {
             <PaddingDiv>
                 <H2>Kontakta oss</H2>
                 <H4>Tel: 08- 123 456 789</H4>
-                <H4>E-mail: kitchenonfire@restaurang.se</H4>
+                <H4>E-post: kitchenonfire@restaurang.se</H4>
             </PaddingDiv>
 
             <img id="muffinFireImg" src={require("../assets/muffin-fire.jpg")} alt="red-chili-in-flames"/>
@@ -102,9 +101,8 @@ export function Contact() {
                     onChange={handleChange} 
                     value={bookingId} 
                     name="bookingId" 
-                    onBlur={() => setTouched({...touched, bookingIdNr: true})} 
+                    onSelect={() => setTouched({...touched, bookingIdNr: true})} 
                 />
-                <p>Har du bokat för fler än sex personer? Vänligen ring oss för avbokning.</p>
                 <button disabled={disableSubmitInput} onClick = {() => customerDeleteBooking(bookingId)}>Avboka</button>
                 {bookingCancelled}
                 {touched.bookingIdNr && <p>{error.bookingIdError.bookingIdNr}</p>}

@@ -5,10 +5,10 @@ import { IPostBooking } from "../../models/IPostBooking";
 import { IPostCustomer } from "../../models/IPostCustomer";
 import { Itouched } from "../../models/ITouched";
 import { PostNewBooking } from "../../services/PostNewBooking";
-import { PlusMinusButton } from "../styled-components/Buttons";
+import { PlusMinusButton, SubmitButton } from "../styled-components/Buttons";
 import { BorderDiv, PaddingDiv, TransparentDiv, WrongInputDiv } from "../styled-components/Divs";
 import { FormInput } from "../styled-components/Forms";
-import { H2, H3, H4 } from "../styled-components/Headings";
+import { H3, H4 } from "../styled-components/Headings";
 import { CheckAvailability } from "./CheckAvailability";
 
 export function Booking() {
@@ -22,6 +22,7 @@ export function Booking() {
     const [confirmGDPR, setConfirmGDPR] = useState(false);
     const [disableSubmitInput, setDisableSubmitInput] = useState(true);
     const [confirmation, setConfirmation] = useState(false);
+    const [pickedDate, setPickedDate] = useState(false);
 
     // const [numberOfTables, setNumberOfTables] = useState({
     //     at18: 0,
@@ -75,14 +76,14 @@ export function Booking() {
         }
     });
 
-    //Validerar input fälten och ger medelanden beroende på felet
+    //Validerar input fälten och ger meddelanden beroende på felet
     //Borde nog flyttas till en egen komponent
     function validation() {               
 
         //namn
         // trim() tar bort alla mellanslag i värdet
         if(!customer.name.trim()) {
-            error.nameError.name = "Vänligen fyll i ditt namn"
+            error.nameError.name = "Vänligen fyll i ditt förnamn"
             error.nameError.approved = false
         } else {
             error.nameError.name = ""
@@ -105,10 +106,10 @@ export function Booking() {
         // @ = @
         // \. = Punkt        
         if(!customer.email.trim()) {
-            error.emailError.email = "Vänligen fyll i din email adress"
+            error.emailError.email = "Vänligen fyll i din e-post"
             error.emailError.approved = false
         } else if (!customer.email.match(/^\S+@\S+\.\S+$/)) {
-            error.emailError.email = "Vänligen fyll i en korrekt email adress"
+            error.emailError.email = "Vänligen fyll i en korrekt e-post-adress"
             error.emailError.approved = false
         } else {
             error.emailError.email = ""
@@ -120,10 +121,10 @@ export function Booking() {
         // \d = Bara siffror 0-9 tillåtna
         // {8} = Hur många \d karaktärer måste finnas (8 i det här fallet) 
         if(!customer.phone.trim()) {
-            error.phoneError.phone = "Vänligen fyll i ditt nummer"
+            error.phoneError.phone = "Vänligen fyll i ditt telefonnummer"
             error.phoneError.approved = false
         } else if (!customer.phone.match(/^07\d{8}$/)) {
-            error.phoneError.phone = "Vänligen fyll i korrekt ett korrekt nummer (07[8 siffror])"
+            error.phoneError.phone = "Vänligen fyll i ett korrekt telefonnummer (07[8 siffror])"
             error.phoneError.approved = false
         } else {
             error.phoneError.phone = ""
@@ -163,7 +164,7 @@ export function Booking() {
         }
     });
 
-    //Kör valideringen och sätter nya värden i bokningen när fälten(customer) ändras
+    //Kör valideringen och sätter nya värden i bokningen när fälten (customer) ändras
     useEffect(() => {
         validation();
         setNewBooking({...newBooking, customer: customer});        
@@ -210,6 +211,7 @@ export function Booking() {
         console.log("time ", childDataTime);
         setNewBooking({...newBooking, time: childDataTime});
         setDisableInput(false);
+        setPickedDate(true);
     };
 
     function childToParentTables18(childDataTables18: number) {
@@ -228,26 +230,96 @@ export function Booking() {
         setNumberOfGuests(childData)
     }
 
-
-    // Om bokning är genomförd ska bekräftelse visas
-    let bookingDone = 
+    let showInputUser =
     <></>
-    if (confirmation) {
-        bookingDone =
-        <TransparentDiv>
-            <H3>Din bokning har nu genomförts. Vi ser fram emot ditt besök!</H3>
-            <br></br>
-            <H3>En bekräftelse har sänts via mail.</H3>
-            <br></br>
-            <H4><Link to="/"> Gå till förstasidan</Link></H4>
-        </TransparentDiv>
-    };
+    if (pickedDate) {
+        showInputUser = 
+        <div>
+            <BorderDiv>
+                <p>Antal gäster: {numberOfGuests} </p>
+                <PlusMinusButton onClick = {() => setNumberOfGuests(numberOfGuests +1)} disabled={disablePlus || disableInput}>+</PlusMinusButton>
+                <PlusMinusButton onClick = {() => setNumberOfGuests(numberOfGuests -1)} disabled={disableMinus || disableInput}>-</PlusMinusButton>
+            </BorderDiv>
+
+            <form>
+            <label htmlFor="name"> Namn: </label>
+            <FormInput
+                approved={error.nameError.approved}
+                touched={touched.fname!}                    
+                disabled={disableInput} 
+                type="text" 
+                name="name" 
+                onChange={handleChange} 
+                value={customer.name} 
+                id="name"
+                onBlur={() => setTouched({...touched, fname: true})}                 
+            /> 
+            <br/>
+
+            <label htmlFor="lastname"> Efternamn: </label>
+            <FormInput 
+                approved={error.lastnameError.approved} 
+                touched={touched.lastname!}
+                disabled={disableInput} 
+                type="text" 
+                name="lastname" 
+                onChange={handleChange} 
+                value={customer.lastname} 
+                id="lastname"
+                onBlur={() => setTouched({...touched, lastname: true})} 
+            />
+            <br/>
+
+            <label htmlFor="email"> E-post: </label>
+            <FormInput
+                approved={error.emailError.approved}
+                touched={touched.email!}
+                disabled={disableInput} 
+                type="text" 
+                name="email" 
+                onChange={handleChange} 
+                value={customer.email} 
+                id="email"
+                onBlur={() => setTouched({...touched, email: true})} 
+                placeholder="epost@mail.se"
+            />
+            <br/>
+
+            <label htmlFor="phone"> Telefon nr: </label>
+            <FormInput
+                approved={error.phoneError.approved}
+                touched={touched.phone!}
+                disabled={disableInput} 
+                type="text" 
+                name="phone" 
+                onChange={handleChange} 
+                value={customer.phone} 
+                id="phone"
+                onBlur={() => setTouched({...touched, phone: true})} 
+                placeholder="07xxxxxxxx"
+            />
+            <br/><br/>
+            <BorderDiv>
+            <input 
+                type="checkbox"
+                id="GDPRcheckbox"                    
+                onClick={() => setConfirmGDPR(!confirmGDPR)}
+            />
+            <label id="labelGDPRcheckbox" htmlFor="GDPRcheckbox">Jag godkänner Kitchen on Fires-villkor för personuppgiftshantering (GDPR)</label>
+            </BorderDiv>
+            <br/>
+
+            </form>
+
+            <SubmitButton disabled={disableSubmitInput} onClick={submitBooking}>Boka bord</SubmitButton>
+        </div>
+    }
 
     let makeBooking = 
         <></>
     if (!confirmation) {
         makeBooking = 
-        <div>          
+        <div>      
             <PaddingDiv>
                 <CheckAvailability 
                     resetNumberOfGuests={resetNumberOfGuests}
@@ -258,78 +330,7 @@ export function Booking() {
                 ></CheckAvailability>
             </PaddingDiv>  
                 
-            <BorderDiv>
-                <p>Antal gäster: {numberOfGuests}</p>
-                <PlusMinusButton onClick = {() => setNumberOfGuests(numberOfGuests +1)} disabled={disablePlus || disableInput}>+</PlusMinusButton>
-                <PlusMinusButton onClick = {() => setNumberOfGuests(numberOfGuests -1)} disabled={disableMinus || disableInput}>-</PlusMinusButton>
-            </BorderDiv>
-
-            <form>
-                <label htmlFor="name"> Namn: </label>
-                <FormInput
-                    approved={error.nameError.approved}
-                    touched={touched.fname!}                    
-                    disabled={disableInput} 
-                    type="text" 
-                    name="name" 
-                    onChange={handleChange} 
-                    value={customer.name} 
-                    id="name"
-                    onBlur={() => setTouched({...touched, fname: true})}                 
-                /> 
-                <br/>
-                
-                <label htmlFor="lastname"> Efternamn: </label>
-                <FormInput 
-                    approved={error.lastnameError.approved} 
-                    touched={touched.lastname!}
-                    disabled={disableInput} 
-                    type="text" 
-                    name="lastname" 
-                    onChange={handleChange} 
-                    value={customer.lastname} 
-                    id="lastname"
-                    onBlur={() => setTouched({...touched, lastname: true})} 
-                />
-                <br/>
-
-                <label htmlFor="email"> E-post: </label>
-                <FormInput
-                    approved={error.emailError.approved}
-                    touched={touched.email!}
-                    disabled={disableInput} 
-                    type="text" 
-                    name="email" 
-                    onChange={handleChange} 
-                    value={customer.email} 
-                    id="email"
-                    onBlur={() => setTouched({...touched, email: true})} 
-                />
-                <br/>
-
-                <label htmlFor="phone"> Telefon nr: </label>
-                <FormInput
-                    approved={error.phoneError.approved}
-                    touched={touched.phone!}
-                    disabled={disableInput} 
-                    type="text" 
-                    name="phone" 
-                    onChange={handleChange} 
-                    value={customer.phone} 
-                    id="phone"
-                    onBlur={() => setTouched({...touched, phone: true})} 
-                />
-                <br/>
-                
-                <input 
-                    type="checkbox"
-                    id="GDPRcheckbox"                    
-                    onClick={() => setConfirmGDPR(!confirmGDPR)}
-                />
-                <label id="labelGDPRcheckbox" htmlFor="GDPRcheckbox">Jag godkänner Kitchen on Fires-villkor för personuppgiftshantering (GDPR)</label>
-                <br/>
-                
-            </form>
+            {showInputUser}  
 
             <WrongInputDiv>
                 {touched.fname && <p>{error.nameError.name}</p>}
@@ -338,102 +339,30 @@ export function Booking() {
                 {touched.phone && <p>{error.phoneError.phone}</p>}
             </WrongInputDiv>
 
-            <button disabled={disableSubmitInput} onClick={submitBooking}>Boka bord</button>
+            {/* <button disabled={disableSubmitInput} onClick={submitBooking}>Boka bord</button> */}
             
             {/* {bookingDone} */}
         </div>
     } 
+
+    // Om bokning är genomförd ska bekräftelse visas
+    let bookingDone = 
+    <></>
+    if (confirmation) {
+        bookingDone =
+        <TransparentDiv>
+            <H3>Din bokning har nu genomförts. Vi ser fram emot ditt besök!</H3>
+            <br/>
+            <H3>En bekräftelse har sänts via mail.</H3>
+            <br/>
+            <H4><Link to="/"> Gå till förstasidan</Link></H4>
+        </TransparentDiv>
+    };
 
     return(
         <>
             {makeBooking}
             {bookingDone}
         </>
-        
-        // <div>          
-        //     <PaddingDiv>
-        //         <CheckAvailability childToParentDate={childToParentDate} childToParentTime={childToParentTime}></CheckAvailability>
-        //     </PaddingDiv>  
-
-        //     <BorderDiv>
-        //         <p>Antal gäster: {numberOfGuests}</p>
-        //         <PlusMinusButton onClick = {() => setNumberOfGuests(numberOfGuests +1)} disabled={disablePlus}>+</PlusMinusButton>
-        //         <PlusMinusButton onClick = {() => setNumberOfGuests(numberOfGuests -1)} disabled={disableMinus}>-</PlusMinusButton>
-        //     </BorderDiv>
-
-        //     <form>
-        //         <label htmlFor="name"> Namn: </label>
-        //         <FormInput
-        //             fname={touched.fname}                    
-        //             disabled={disableInput} 
-        //             type="text" 
-        //             name="name" 
-        //             onChange={handleChange} 
-        //             value={customer.name} 
-        //             id="name"
-        //             onBlur={() => setTouched({...touched, fname: true})}                 
-        //         /> 
-        //         <br/>
-                
-        //         <label htmlFor="lastname"> Efternamn: </label>
-        //         <FormInput 
-        //             lastname={touched.lastname} 
-        //             disabled={disableInput} 
-        //             type="text" 
-        //             name="lastname" 
-        //             onChange={handleChange} 
-        //             value={customer.lastname} 
-        //             id="lastname"
-        //             onBlur={() => setTouched({...touched, lastname: true})} 
-        //         />
-        //         <br/>
-
-        //         <label htmlFor="email"> E-post: </label>
-        //         <FormInput
-        //             email={touched.email}
-        //             disabled={disableInput} 
-        //             type="text" 
-        //             name="email" 
-        //             onChange={handleChange} 
-        //             value={customer.email} 
-        //             id="email"
-        //             onBlur={() => setTouched({...touched, email: true})} 
-        //         />
-        //         <br/>
-
-        //         <label htmlFor="phone"> Telefon nr: </label>
-        //         <FormInput
-        //             phone={touched.phone}
-        //             disabled={disableInput} 
-        //             type="text" 
-        //             name="phone" 
-        //             onChange={handleChange} 
-        //             value={customer.phone} 
-        //             id="phone"
-        //             onBlur={() => setTouched({...touched, phone: true})} 
-        //         />
-        //         <br/>
-                
-        //         <input 
-        //             type="checkbox"
-        //             id="GDPRcheckbox"                    
-        //             onClick={() => setConfirmGDPR(!confirmGDPR)}
-        //         />
-        //         <label id="labelGDPRcheckbox" htmlFor="GDPRcheckbox">Jag godkänner Kitchen on Fires-villkor för personuppgiftshantering (GDPR)</label>
-        //         <br/>
-                
-        //     </form>
-
-        //     <WrongInputDiv>
-        //         {touched.fname && <p>{error.nameError.name}</p>}
-        //         {touched.lastname && <p>{error.lastnameError.lastname}</p>}
-        //         {touched.email && <p>{error.emailError.email}</p>}
-        //         {touched.phone && <p>{error.phoneError.phone}</p>}
-        //     </WrongInputDiv>
-
-        //     <button disabled={disableSubmitInput} onClick={submitBooking}>Boka bord</button>
-            
-        //     {bookingDone}
-        // </div>
     );
 };

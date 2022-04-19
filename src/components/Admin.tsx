@@ -1,4 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { ChangeBooking } from "../models/ChangeBooking";
 import { IGetBooking } from "../models/IGetBooking";
 import { IGetCustomer } from "../models/IGetCustomer";
@@ -7,9 +8,10 @@ import { deleteBooking } from "../services/DeleteBookingService";
 import { GetBookingsService } from "../services/GetBookingsService";
 import { GetCustomerService } from "../services/GetCustomerService";
 import { ChangeButton, DeleteButton } from "./styled-components/Buttons";
-import { BookingDiv, BorderBookingDiv, ChangeBookingDiv, TransparentDiv } from "./styled-components/Divs";
-import { H2, H3 } from "./styled-components/Headings";
-import { NrOfGuests, WordBreakOK } from "./styled-components/Paragraf";
+import { BookingDiv, BorderBookingDiv, BoxBooking, ChangeBookingDiv, TransparentDiv } from "./styled-components/Divs";
+import { H2, H3, H4 } from "./styled-components/Headings";
+import { UnderlineP, WordBreakOK } from "./styled-components/Paragraf";
+import { BoldSpan } from "./styled-components/Span";
 
 export function Admin() {
     
@@ -20,6 +22,8 @@ export function Admin() {
     const [disableMinus, setDisableMinus] = useState(false);
     const [changeBookingAdmin, setChangeBookingAdmin] = useState<null | number>();
     const [updateConfirmation, setUpdateConfirmation] = useState(false);
+    const [dateInput, setDateInput] = useState(false);
+    const [timeInput, setTimeInput] = useState(false);
 
     const [changeBooking, setChangeBooking] = useState<ChangeBooking>({    
         date: "",
@@ -30,6 +34,7 @@ export function Admin() {
     let customerArray: IGetCustomer[] = [];
     let service = new GetBookingsService();
     let customerService = new GetCustomerService();
+
 
     useEffect(() => {
 
@@ -54,10 +59,10 @@ export function Admin() {
         }   
     }, [bookings]);
 
-    function checkCustomerArray() {
-        console.log("customers", customers);
-        console.log("bookings", bookings);
-    };
+    // function checkCustomerArray() {
+    //     console.log("customers", customers);
+    //     console.log("bookings", bookings);
+    // };
 
     //Uppdaterar renderingen av antalet gäster samt uppdaterar numberOfGuests i changeBooking
     useEffect(() => {
@@ -76,7 +81,6 @@ export function Admin() {
         setChangeBooking({...changeBooking, numberOfGuests: numberOfGuests});                
 
     }, [numberOfGuests]);
-
 
     function adminDeleteBooking(bookingId: string, customerId: string) {
         // let service = new GetBookingsService();
@@ -117,7 +121,6 @@ export function Admin() {
         console.log(changeBooking)
     };
 
-
     // När "Ändra bokning" klickas på. Kör put-funktion i service
     function adminChangeBooking(bookingId: string, customerId: string) {
     
@@ -142,9 +145,9 @@ export function Admin() {
         updateDone =
         <TransparentDiv>
             <H3>Bokningen är nu uppdaterad.</H3>
-            <br></br>
+            <br/>
             <H3></H3>
-            <br></br>
+            <br/>
             <button onClick = {() => setUpdateConfirmation(false)}>Se alla bokningar</button>
         </TransparentDiv>
     };
@@ -155,27 +158,78 @@ export function Admin() {
             if (customer._id === bookings[i].customerId) {
                 return ( 
                     <BookingDiv key={j}>
-                        <WordBreakOK>KundId: {customer._id}</WordBreakOK> 
-                        <br></br>
-                        <p>Förnamn: {customer.name}</p> 
-                        <p>Efternamn: {customer.lastname}</p> 
-                        <br></br>
-                        <p>Telnr: {customer.phone}</p>
-                        <WordBreakOK>E-mail: {customer.email}</WordBreakOK> 
-                        <br></br>
+                        {/* <WordBreakOK>
+                            <BoldSpan>
+                                KundId: {customer._id}
+                            </BoldSpan>
+                        </WordBreakOK> 
+
+                        <br></br> */}
+
+                        {/* <p><BoldSpan>Förnamn: </BoldSpan>{customer.name}</p> 
+                        <p><BoldSpan>Efternamn: </BoldSpan>{customer.lastname}</p> */}
+
+                        <H4><BoldSpan>Namn: </BoldSpan>{customer.name} {customer.lastname}</H4> 
+
+                        {/* <br></br> */}
+
+                        <p><BoldSpan>Telnr: </BoldSpan>{customer.phone}</p>
+
+                        <WordBreakOK>
+                            <BoldSpan>E-mail: </BoldSpan>
+                            {customer.email}
+                        </WordBreakOK> 
+
+                        <br/>
                 
                         {/* <p>KundId: {bookings[i].customerId}</p> */}
-                        <p>Datum: {bookings[i].date}</p>
-                        <p>Antal personer: {bookings[i].numberOfGuests}</p>
-                        {/* {bookings[i].numberOfGuests <= 6 && <p>Antal personer: {bookings[i].numberOfGuests}</p>}
-                        {bookings[i].numberOfGuests > 6 && <NrOfGuests>Antal personer: {bookings[i].numberOfGuests}</NrOfGuests>} */}
+
+                        {/* <p><BoldSpan>Datum: </BoldSpan>{bookings[i].date}</p> */}
+
+                        <BoxBooking>
+                            <p>{bookings[i].date} kl. {bookings[i].time}</p>
+
+                            {bookings[i].numberOfGuests <= 6 && 
+                                <p>{bookings[i].numberOfGuests} personer</p>
+                            }
+
+                            {bookings[i].numberOfGuests > 6 && 
+                                <p>
+                                    <BoldSpan>! </BoldSpan>
+                                    {bookings[i].numberOfGuests} personer
+                                    <BoldSpan> !</BoldSpan></p>
+                            }
+
+                        </BoxBooking>
+
                         {/* <p>RestaurangId: {bookings[i].restaurantId}</p> */}
-                        <p>Bokad tid: {bookings[i].time}</p> 
-                        <br></br>
-                        <WordBreakOK>BokningsId: {bookings[i]._id}</WordBreakOK> 
-                        <br></br>
+
+                        {/* <p><BoldSpan>Bokad tid: </BoldSpan>{bookings[i].time}</p>  */}
+
+                        <br/>
+
+                        <WordBreakOK>
+                            <BoldSpan>
+                            <UnderlineP> KundId: </UnderlineP> 
+                                {customer._id}
+                            </BoldSpan>
+                        </WordBreakOK> 
+
+                        <br/>
+
+                        <WordBreakOK>
+                            <BoldSpan>
+                                <UnderlineP> BokningsId: </UnderlineP>
+                            </BoldSpan>
+                            {bookings[i]._id}
+                        </WordBreakOK> 
+
+                        <br/>
+
                         <ChangeButton onClick = {() => printChangeBooking(j)}> Ändra bokning </ChangeButton>
-                        <br></br>
+
+                        <br/>
+
                         <DeleteButton onClick = {() => adminDeleteBooking(bookings[i]._id, customer._id)}>Ta bort bokning</DeleteButton>
                     
                         {changeBookingAdmin === j && <div>
@@ -189,16 +243,17 @@ export function Admin() {
                             <form>
                                 <ChangeBookingDiv>
                                     <label htmlFor="date"> Datum: </label>
-                                    <input type="date" name="date" onChange={handleInput}/>
+                                    <input type="date" name="date" onChange={handleInput} onClick = {() => setDateInput(true)} />
                                 </ChangeBookingDiv>
         
                                 <ChangeBookingDiv>
                                     <label htmlFor="time"> Tid: </label>
-                                    <input type="text" name="time" value={changeBooking.time} onChange={handleInput}/>                                    </ChangeBookingDiv>
+                                    <input type="text" name="time" value={changeBooking.time} onChange={handleInput} onClick = {() => setTimeInput(true)}/>                                    
+                                </ChangeBookingDiv>
                             </form>
         
                             <ChangeBookingDiv>
-                                <button onClick = {() => adminChangeBooking(bookings[i]._id, bookings[i].customerId)}>Ändra bokning</button>
+                                <button onClick = {() => adminChangeBooking(bookings[i]._id, bookings[i].customerId)} disabled={!dateInput || !timeInput}>Ändra bokning</button>
                             </ChangeBookingDiv>
                         </div>}
                     </BookingDiv> 
@@ -221,16 +276,20 @@ export function Admin() {
         <section>
             <H2>Admin</H2>
             <TransparentDiv>
-                OBS! Om en kund har en bokning och vill ändra till fler än sex personer 
+                <BoldSpan>OBS!</BoldSpan> Om en kund har en bokning och vill ändra till fler än sex personer 
                 så behöver en avbokning göras för att sedan göra en ny bokning på bokningssidan.
+
+                <br/><br/>
+
+                <p>Klicka <BoldSpan><Link to="/booking">här</Link></BoldSpan> om du vill göra en ny bokning.</p>
             </TransparentDiv>
-            <br></br>
+            <br/>
             <BorderBookingDiv> 
                 <H3>Bokningar</H3>
                 {bookingView}
                 {updateDone}
             </BorderBookingDiv>
-            <button onClick={checkCustomerArray}>Click</button>
+            {/* <button onClick={checkCustomerArray}>Click</button> */}
         </section>
     );
 };

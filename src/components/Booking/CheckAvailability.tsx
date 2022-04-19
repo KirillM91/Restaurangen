@@ -103,12 +103,12 @@ export function CheckAvailability(props: IChildToParentProps) {
                         console.log("tables18", sumOfTables18)
                         
                         if (sumOfTables18 >= 15) {
-                            console.log("Det är fullbokat kl. 18 idag")
+                            // console.log("Det är fullbokat kl. 18 idag")
                             setTimeTaken18(true)
                             console.log("timeTaken18", timeTaken18);                            
                             
                         } else {
-                            console.log("Det går att boka kl. 18 idag")
+                            // console.log("Det går att boka kl. 18 idag")
                             setTimeTaken18(false)
                         }
                     } else {
@@ -129,12 +129,12 @@ export function CheckAvailability(props: IChildToParentProps) {
                         console.log("tables21", sumOfTables21)
 
                         if (sumOfTables21 >= 15) {
-                            console.log("Det är fullbokat kl. 21 idag")
+                            // console.log("Det är fullbokat kl. 21 idag")
                             setTimeTaken21(true)
                             console.log("timeTaken21", timeTaken21);
                             
                         } else {
-                            console.log("Det går att boka kl. 21 idag")
+                            // console.log("Det går att boka kl. 21 idag")
                             setTimeTaken21(false)
                         }
 
@@ -148,7 +148,7 @@ export function CheckAvailability(props: IChildToParentProps) {
                         setTimeTaken21(true)
                     
                 } else {
-                    console.log("Det finns ingen bokning idag. Du kan boka")
+                    // console.log("Det finns ingen bokning idag. Du kan boka")
                     setTimeTaken18(false)
                     setTimeTaken21(false)                    
                 }
@@ -163,7 +163,7 @@ export function CheckAvailability(props: IChildToParentProps) {
 
     // När klickat på kl. 18
     function chooseTime18() {
-        console.log("Valt kl. 18");
+        // console.log("Valt kl. 18");
 
         props.childToParentTime("18:00");
         setPickedTime("18:00");
@@ -173,7 +173,7 @@ export function CheckAvailability(props: IChildToParentProps) {
 
     // När klickat på kl. 21
     function chooseTime21() {
-        console.log("Valt kl. 21");
+        // console.log("Valt kl. 21");
 
         props.childToParentTime("21:00");
         setPickedTime("21:00");
@@ -185,14 +185,14 @@ export function CheckAvailability(props: IChildToParentProps) {
         <div> 
             {/* <p>CheckAvailability</p> */}
             <label htmlFor="date"> Välj datum: </label>
-            <input type="date" min={"2022-04-14"} onChange={handleChange} value={pickedDate} name="date"></input>
+            <input type="date" min={"2022-04-19"} onChange={handleChange} value={pickedDate} name="date"></input>
             {/* <Calendar onChange={setValueDate} value={valueDate} /> */}
             {/* <button onClick={checkDate} >Se tillgänglighet</button> */}
             {/* <DatePicker onChange={handleChange} value={pickedDate}></DatePicker> */}
             <TimeDiv>
                 {!timeTaken18 && <TimeButton onClick={chooseTime18}>Kl. 18</TimeButton>}
-                {!timeTaken21 && <TimeButton onClick={chooseTime21}>Kl. 21</TimeButton>}
                 {timeTaken18 && <button disabled>Kl. 18</button>}
+                {!timeTaken21 && <TimeButton onClick={chooseTime21}>Kl. 21</TimeButton>}
                 {timeTaken21 && <button disabled>Kl. 21</button>}
             </TimeDiv>
         </div>
