@@ -1,18 +1,22 @@
 import styled from "styled-components";
 
 export const DeleteButton = styled.button`
-    background-color: #a80b04;
+    background-color: #830b05;
     color: white;
     padding: 1%;
+    border-radius: 5px;
+    width: 110px;
     @media screen and (min-width: 1024px) {
         padding: 0.5%;
     }
 `;
 
 export const ChangeButton = styled.button`
-    background-color: #d3cccc;
-    color: black;
+    background-color: #464242;
+    color: white;
     padding: 1%;
+    border-radius: 5px;
+    width: 110px;
     @media screen and (min-width: 1024px) {
         padding: 0.5%;
     }
@@ -23,16 +27,36 @@ export const TimeButton = styled.button`
     color: black;
     padding: 4%;
     border-radius: 8px;
+
+    &:hover {
+        background-color: #a8a6a6;
+    }
+
+    &:focus {
+        background-color: #706c6c;
+        /* border: white 1px solid; */
+        color: white;
+    }
+
     @media screen and (min-width: 1024px) {
         padding: 1%;
     }
 `;
 
 export const SubmitButton = styled.button`
-    background-color: #e7e5e5;
-    color: black;
-    padding: 0.5%;
+    background-color: #464242;
+    color: white;
+    padding: 2%;
     border-radius: 8px;
+
+    &:disabled {
+        background-color: #1b1a1a;
+        color: black;
+    }
+
+    @media screen and (min-width: 1024px) {
+        padding: 0.5%;
+    }
 `;
 
 export const PlusMinusButton = styled.button`
@@ -45,14 +69,17 @@ export const PlusMinusButton = styled.button`
     border-radius: 50%;
     width: 38px;
     aspect-ratio: 1/1;
+    margin: 1%;
 
     &:hover {
         border: 3px solid white;
     }
+
     &:active {
         border: 3px solid gray;
         color: gray;
     }
+    
     @media screen and (min-width: 1024px) {
         font-size: 1.1rem;
         padding: 0.5%;

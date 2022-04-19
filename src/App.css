@@ -4,10 +4,8 @@
     background-size: cover;
     background-position: center;
     width: 100vw;
-    min-height: 87vh;
+    min-height: 85vh;
     max-height: fit-content;
-    margin: 0;
-    padding: 0;
     display: flex;
 }
 
@@ -172,6 +170,7 @@ a {
     color: white;
 }
 
+
 /* Media query för skärmar större än 768 px */
 @media screen and (min-width: 768px) {
     #muffinFireImg {
@@ -186,6 +185,8 @@ a {
 @media screen and (min-width: 1024px) {
     #homeBgImg {
         background-image: url("./assets/chili-flames.jpg");
+        min-height: 85vh;
+        max-height: fit-content;
     }
 
     .layout-header{       
