@@ -152,6 +152,7 @@ export function Booking() {
     //Kollar om alla fält är korrekt ifyllda och att GDPR boxen är intryckt, innan användaren kan skicka bokningen
     useEffect(() => {
         if(
+            newBooking.date !== "" &&            
             confirmGDPR === true && 
             error.nameError.approved === true &&
             error.lastnameError.approved === true &&
@@ -172,11 +173,11 @@ export function Booking() {
 
     //Uppdaterar renderingen av antalet gäster samt uppdaterar numberOfGuests i newBooking
     useEffect(() => {
-        let x18 = 15-numberOfTables18
-        let x21 = 15-numberOfTables21
+        let remainingTables18 = 15-numberOfTables18
+        let remainingTables21 = 15-numberOfTables21
 
         if(newBooking.time === "18:00") {
-            if(numberOfTables18 >= x18 && numberOfGuests === 6*x18) {
+            if(numberOfGuests === 6*remainingTables18 || numberOfGuests >=90) {
                 setDisablePlus(true);    
             } else {
                 setDisablePlus(false);
@@ -184,7 +185,7 @@ export function Booking() {
 
         } 
         else if(newBooking.time === "21:00") {
-            if(numberOfTables21 >= x21 && numberOfGuests === 6*x21) {
+            if(numberOfGuests === 6*remainingTables21 || numberOfGuests >=90) {
                 setDisablePlus(true);    
             } else {
                 setDisablePlus(false);
@@ -198,31 +199,33 @@ export function Booking() {
         };
 
         setNewBooking({...newBooking, numberOfGuests: numberOfGuests});
+        console.log(numberOfTables18, newBooking.time, disablePlus)
+        
 
     }, [numberOfGuests]);
 
     // Tar emot värde från CheckAvailability
     function childToParentDate(childDataDate: string) {
-        console.log("asd", childDataDate);
+        // console.log("asd", childDataDate);
         setNewBooking({...newBooking, date: childDataDate});
     };
 
     function childToParentTime(childDataTime: string) {
-        console.log("time ", childDataTime);
+        // console.log("time ", childDataTime);
         setNewBooking({...newBooking, time: childDataTime});
         setDisableInput(false);
         setPickedDate(true);
     };
 
     function childToParentTables18(childDataTables18: number) {
-        console.log("child data 18", childDataTables18)
-        console.log("number of tables in parent 18", numberOfTables18);
+        // console.log("child data 18", childDataTables18)
+        // console.log("number of tables in parent 18", numberOfTables18);
         setNumberOfTables18(childDataTables18);
     }
 
     function childToParentTables21(childDataTables21: number) {
-        console.log("child data 21", childDataTables21)
-        console.log("number of tables in parent 21", numberOfTables21);
+        // console.log("child data 21", childDataTables21)
+        // console.log("number of tables in parent 21", numberOfTables21);
         setNumberOfTables21(childDataTables21);
     }
 
@@ -236,10 +239,16 @@ export function Booking() {
         showInputUser = 
         <div>
             <BorderDiv>
-                <p>Antal gäster: {numberOfGuests} </p>
-                <PlusMinusButton onClick = {() => setNumberOfGuests(numberOfGuests +1)} disabled={disablePlus || disableInput}>+</PlusMinusButton>
+                <p>Antal gäster: {numberOfGuests} </p>                
                 <PlusMinusButton onClick = {() => setNumberOfGuests(numberOfGuests -1)} disabled={disableMinus || disableInput}>-</PlusMinusButton>
+                <PlusMinusButton onClick = {() => setNumberOfGuests(numberOfGuests +1)} disabled={disablePlus || disableInput}>+</PlusMinusButton>
             </BorderDiv>
+
+            <div>
+                {newBooking.time === "18:00" && <p>Lediga bord vid valt tillfälle: {15 - numberOfTables18}</p>}
+                {newBooking.time === "21:00" && <p>Lediga bord vid valt tillfälle: {15 - numberOfTables21}</p>}
+                <p>Varje bord har upp till 6 sittplatser.</p>
+            </div>
 
             <form>
             <label htmlFor="name"> Namn: </label>

@@ -38,6 +38,12 @@ export const TimeButton = styled.button`
         color: white;
     }
 
+    &:disabled {
+        background-color: #1b1a1a;
+        color: #868686;
+        border-color: #868686;
+    }
+
     @media screen and (min-width: 1024px) {
         padding: 1%;
     }
