@@ -6,8 +6,8 @@ import { GetBooking } from "../../models/GetBooking";
 import { GetBookingsService } from "../../services/GetBookingsService";
 import { TimeButton } from "../styled-components/Buttons";
 import { TimeDiv, TransparentDiv } from "../styled-components/Divs";
-import Calendar from "react-calendar";
-import DatePicker from 'sassy-datepicker';
+// import Calendar from "react-calendar";
+// import DatePicker from 'sassy-datepicker';
 
 interface IChildToParentProps {
     childToParentDate(newBookingDate: string): void;
@@ -24,9 +24,15 @@ export function CheckAvailability(props: IChildToParentProps) {
     const [timeTaken18, setTimeTaken18] = useState(true);
     const [timeTaken21, setTimeTaken21] = useState(true);
     const [pickedTime, setPickedTime] = useState("");
+    const [minDate, setMinDate] = useState<string>(
+        // new Date().getFullYear() +
+        // "-" + 
+        // (Number(new Date().getMonth()) + 1) +
+        // "-" + 
+        // new Date().getDate()
+    );
     // const [valueDate, setValueDate] = useState(new Date());
     // const [pickedTime, setPickedTime] = useState(new Date().toString())
-
 
 
     let timeList18: GetBooking[] = [];
@@ -37,6 +43,44 @@ export function CheckAvailability(props: IChildToParentProps) {
  
     let sumOfTables18: number = 0;
     let sumOfTables21: number = 0;
+
+
+    // Sätter rätt datum för att passerade datum inte ska kunna väljas i bokningen
+    useEffect(() => {
+        if (new Date().getMonth() < 9 && new Date().getDate() < 10) {
+            setMinDate(
+                new Date().getFullYear() +
+                "-" +
+                "0" + (Number(new Date().getMonth()) + 1) +
+                "-" +
+                "0" + (Number(new Date().getDate()))
+            )
+        } else if (new Date().getMonth() < 9 && new Date().getDate() > 10) {
+            setMinDate(
+                new Date().getFullYear() +
+                "-" +
+                "0" + (Number(new Date().getMonth()) + 1) +
+                "-" +
+                new Date().getDate()
+            )
+        } else if (new Date().getMonth() > 9 && new Date().getDate() < 10) {
+            setMinDate(
+                new Date().getFullYear() +
+                "-" +
+                (Number(new Date().getMonth()) + 1) +
+                "-" +
+                "0" + (Number(new Date().getDate()))
+            )
+        } else {
+            setMinDate(
+                new Date().getFullYear() +
+                "-" + 
+                (Number(new Date().getMonth()) + 1) +
+                "-" + 
+                new Date().getDate()
+            )
+        }
+    }, []);
 
     // Funktion som körs när inputfältet för datum ändras
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
@@ -201,7 +245,7 @@ export function CheckAvailability(props: IChildToParentProps) {
         <div> 
             {/* <p>CheckAvailability</p> */}
             <label htmlFor="date"> Välj datum: </label>
-            <input type="date" min={"2022-04-19"} onChange={handleChange} value={pickedDate} name="date"></input>
+            <input type="date" min={minDate} onChange={handleChange} value={pickedDate} name="date"></input>
             {/* <Calendar onChange={setValueDate} value={valueDate} /> */}
             {/* <button onClick={checkDate} >Se tillgänglighet</button> */}
             {/* <DatePicker onChange={handleChange} value={pickedDate}></DatePicker> */}
