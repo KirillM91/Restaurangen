@@ -8,9 +8,6 @@ import { CreateRestaurant } from './components/CreateRestaurant';
 function App() {
   return (
     <div className="App">
-      {/* <header className="App-header">        
-        <p>hej hej</p>
-      </header> */}
     </div>
   );
 }

@@ -7,7 +7,7 @@ import { updateBooking } from "../services/ChangeBookingService";
 import { deleteBooking } from "../services/DeleteBookingService";
 import { GetBookingsService } from "../services/GetBookingsService";
 import { GetCustomerService } from "../services/GetCustomerService";
-import { ChangeButton, DeleteButton } from "./styled-components/Buttons";
+import { ChangeButton, DeleteButton, TimeButton } from "./styled-components/Buttons";
 import { BookingDiv, BorderBookingDiv, BoxBooking, ChangeBookingDiv, TransparentDiv } from "./styled-components/Divs";
 import { H2, H3, H4 } from "./styled-components/Headings";
 import { UnderlineP, WordBreakOK } from "./styled-components/Paragraf";
@@ -158,33 +158,13 @@ export function Admin() {
             if (customer._id === bookings[i].customerId) {
                 return ( 
                     <BookingDiv key={j}>
-                        {/* <WordBreakOK>
-                            <BoldSpan>
-                                KundId: {customer._id}
-                            </BoldSpan>
-                        </WordBreakOK> 
-
-                        <br></br> */}
-
-                        {/* <p><BoldSpan>Förnamn: </BoldSpan>{customer.name}</p> 
-                        <p><BoldSpan>Efternamn: </BoldSpan>{customer.lastname}</p> */}
-
                         <H4><BoldSpan>Namn: </BoldSpan>{customer.name} {customer.lastname}</H4> 
-
-                        {/* <br></br> */}
-
                         <p><BoldSpan>Telnr: </BoldSpan>{customer.phone}</p>
-
                         <WordBreakOK>
                             <BoldSpan>E-mail: </BoldSpan>
                             {customer.email}
                         </WordBreakOK> 
-
                         <br/>
-                
-                        {/* <p>KundId: {bookings[i].customerId}</p> */}
-
-                        {/* <p><BoldSpan>Datum: </BoldSpan>{bookings[i].date}</p> */}
 
                         <BoxBooking>
                             <p>{bookings[i].date} kl. {bookings[i].time}</p>
@@ -199,39 +179,27 @@ export function Admin() {
                                     {bookings[i].numberOfGuests} personer
                                     <BoldSpan> !</BoldSpan></p>
                             }
-
                         </BoxBooking>
 
-                        {/* <p>RestaurangId: {bookings[i].restaurantId}</p> */}
-
-                        {/* <p><BoldSpan>Bokad tid: </BoldSpan>{bookings[i].time}</p>  */}
-
                         <br/>
-
                         <WordBreakOK>
                             <BoldSpan>
                             <UnderlineP> KundId: </UnderlineP> 
                                 {customer._id}
                             </BoldSpan>
                         </WordBreakOK> 
-
                         <br/>
-
                         <WordBreakOK>
                             <BoldSpan>
                                 <UnderlineP> BokningsId: </UnderlineP>
                             </BoldSpan>
                             {bookings[i]._id}
                         </WordBreakOK> 
-
                         <br/>
-
                         <ChangeButton onClick = {() => printChangeBooking(j)}> Ändra bokning </ChangeButton>
-
                         <br/>
-
                         <DeleteButton onClick = {() => adminDeleteBooking(bookings[i]._id, customer._id)}>Ta bort bokning</DeleteButton>
-                    
+                        
                         {changeBookingAdmin === j && <div>
                             <ChangeBookingDiv>
                                 <h3>Ändra bokningen: </h3>
@@ -276,14 +244,19 @@ export function Admin() {
         <section>
             <H2>Admin</H2>
             <TransparentDiv>
-                <BoldSpan>OBS!</BoldSpan> Om en kund har en bokning och vill ändra till fler än sex personer 
-                så behöver en avbokning göras för att sedan göra en ny bokning på bokningssidan.
+                <p>
+                    <BoldSpan>OBS!</BoldSpan> 
+                    Om en kund har en bokning och vill ändra till fler än sex personer 
+                    så behöver en avbokning göras för att sedan göra en ny bokning på bokningssidan.
+                </p>
 
                 <br/><br/>
 
                 <p>Klicka <BoldSpan><Link to="/booking">här</Link></BoldSpan> om du vill göra en ny bokning.</p>
             </TransparentDiv>
+
             <br/>
+            
             <BorderBookingDiv> 
                 <H3>Bokningar</H3>
                 {bookingView}
