@@ -28,8 +28,8 @@ export function CheckAvailability(props: IChildToParentProps) {
     const [picked18, setPicked18] = useState(false);
     const [picked21, setPicked21] = useState(false);
 
-    let timeList18: GetBooking[] = [];
-    let timeList21: GetBooking[] = [];
+    let timeList18: number[] = [];
+    let timeList21: number[] = [];
 
     let numberOfTables18 = []
     let numberOfTables21 = []
@@ -118,9 +118,7 @@ export function CheckAvailability(props: IChildToParentProps) {
 
                 //Kollar om det finns bokningar samma dag som vald datum
                 //Om inte enablas tid knappar
-                if (bookingsFromApi[booking].date === e.target.value) { 
-                    console.log("jag är i först if satsen");
-                    
+                if (bookingsFromApi[booking].date === e.target.value) {
                     
                     //Kollar om det finns bokningar kl 18:00 samma dag som vald datum (Likadant för kl 21)
                     //Om inte enablas tid knappar
@@ -128,7 +126,6 @@ export function CheckAvailability(props: IChildToParentProps) {
                         
                         //Skickar in nummer av numberOfGuests till timeList array
                         timeList18.push(bookingsFromApi[booking].numberOfGuests)
-                        console.log("this: ", timeList18);                        
                       
                         //Omvandlar varje numberOfGuests till antal bord som behövs för det antalet gäster, 
                         //genom att dela varje nummer med 6 och runda upp till heltal
@@ -207,6 +204,7 @@ export function CheckAvailability(props: IChildToParentProps) {
                 }
             }
         };
+
         })
         // Fånga eventuellt error
         .catch((error: any) => {

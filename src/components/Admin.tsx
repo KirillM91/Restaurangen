@@ -40,8 +40,9 @@ export function Admin() {
 
         service.getBookings()
         .then(bookingsResponse => {
-            setBookings(bookingsResponse);
-            console.log("Bokningar:", bookingsResponse)
+            let sortedBookingResponse = bookingsResponse.sort((a, b) => +new Date(a.date) - +new Date(b.date))
+            setBookings(sortedBookingResponse);
+            console.log("Bokningar:", sortedBookingResponse)
         }) 
     }, [updateConfirmation]);
 
@@ -152,31 +153,33 @@ export function Admin() {
         </TransparentDiv>
     };
 
-    // Skriva ut bokningarna
-    let customer = customers.map((customer: IGetCustomer, j: number) => {
-        for (let i = 0; i < bookings.length; i++) {
-            if (customer._id === bookings[i].customerId) {
+   
+
+    let booking = bookings.map((booking: IGetBooking, j: number) => {
+        for (let i = 0; i < customers.length; i++) {            
+            if (booking.customerId === customers[i]._id) {
+
                 return ( 
                     <BookingDiv key={j}>
-                        <H4><BoldSpan>Namn: </BoldSpan>{customer.name} {customer.lastname}</H4> 
-                        <p><BoldSpan>Telnr: </BoldSpan>{customer.phone}</p>
+                        <H4><BoldSpan>Namn: </BoldSpan>{customers[i].name} {customers[i].lastname}</H4> 
+                        <p><BoldSpan>Telnr: </BoldSpan>{customers[i].phone}</p>
                         <WordBreakOK>
                             <BoldSpan>E-mail: </BoldSpan>
-                            {customer.email}
+                            {customers[i].email}
                         </WordBreakOK> 
                         <br/>
 
                         <BoxBooking>
-                            <p>{bookings[i].date} kl. {bookings[i].time}</p>
+                            <p>{booking.date} kl. {booking.time}</p>
 
-                            {bookings[i].numberOfGuests <= 6 && 
-                                <p>{bookings[i].numberOfGuests} personer</p>
+                            {booking.numberOfGuests <= 6 && 
+                                <p>{booking.numberOfGuests} personer</p>
                             }
 
-                            {bookings[i].numberOfGuests > 6 && 
+                            {booking.numberOfGuests > 6 && 
                                 <p>
                                     <BoldSpan>! </BoldSpan>
-                                    {bookings[i].numberOfGuests} personer
+                                    {booking.numberOfGuests} personer
                                     <BoldSpan> !</BoldSpan></p>
                             }
                         </BoxBooking>
@@ -185,7 +188,7 @@ export function Admin() {
                         <WordBreakOK>
                             <BoldSpan>
                             <UnderlineP> KundId: </UnderlineP> 
-                                {customer._id}
+                                {customers[i]._id}
                             </BoldSpan>
                         </WordBreakOK> 
                         <br/>
@@ -193,12 +196,12 @@ export function Admin() {
                             <BoldSpan>
                                 <UnderlineP> BokningsId: </UnderlineP>
                             </BoldSpan>
-                            {bookings[i]._id}
+                            {booking._id}
                         </WordBreakOK> 
                         <br/>
                         <ChangeButton onClick = {() => printChangeBooking(j)}> Ändra bokning </ChangeButton>
                         <br/>
-                        <DeleteButton onClick = {() => adminDeleteBooking(bookings[i]._id, customer._id)}>Ta bort bokning</DeleteButton>
+                        <DeleteButton onClick = {() => adminDeleteBooking(booking._id, customers[i]._id)}>Ta bort bokning</DeleteButton>
                         
                         {changeBookingAdmin === j && <div>
                             <ChangeBookingDiv>
@@ -213,15 +216,18 @@ export function Admin() {
                                     <label htmlFor="date"> Datum: </label>
                                     <input type="date" name="date" onChange={handleInput} onClick = {() => setDateInput(true)} />
                                 </ChangeBookingDiv>
-        
-                                <ChangeBookingDiv>
-                                    <label htmlFor="time"> Tid: </label>
-                                    <input type="text" name="time" value={changeBooking.time} onChange={handleInput} onClick = {() => setTimeInput(true)}/>                                    
-                                </ChangeBookingDiv>
                             </form>
+                                <ChangeBookingDiv>
+                                    {/* <label htmlFor="time"> Tid: </label> */}                                    
+                                    <p>Ny tid: {changeBooking.time}</p>
+                                    {/* <input type="text" name="time" value={changeBooking.time} onChange={handleInput} onClick = {() => setTimeInput(true)}/> */}
+                                    <button onClick={() => setChangeBooking({...changeBooking, time: "18:00"})}>Kl. 18</button>  
+                                    <button onClick={() => setChangeBooking({...changeBooking, time: "21:00"})}>Kl. 21</button>                                   
+                                </ChangeBookingDiv>
+                            
         
                             <ChangeBookingDiv>
-                                <button onClick = {() => adminChangeBooking(bookings[i]._id, bookings[i].customerId)} disabled={!dateInput || !timeInput}>Ändra bokning</button>
+                                <button onClick = {() => adminChangeBooking(booking._id, booking.customerId)} disabled={!dateInput || !timeInput}>Ändra bokning</button>
                             </ChangeBookingDiv>
                         </div>}
                     </BookingDiv> 
@@ -230,13 +236,94 @@ export function Admin() {
         }
     });
 
+
+    // Skriva ut bokningarna
+
+    
+    // let customer = customers.map((customer: IGetCustomer, j: number) => {
+    //     for (let i = 0; i < bookings.length; i++) {
+    //         if (customer._id === bookings[i].customerId) {
+    //             return ( 
+    //                 <BookingDiv key={j}>
+    //                     <H4><BoldSpan>Namn: </BoldSpan>{customer.name} {customer.lastname}</H4> 
+    //                     <p><BoldSpan>Telnr: </BoldSpan>{customer.phone}</p>
+    //                     <WordBreakOK>
+    //                         <BoldSpan>E-mail: </BoldSpan>
+    //                         {customer.email}
+    //                     </WordBreakOK> 
+    //                     <br/>
+
+    //                     <BoxBooking>
+    //                         <p>{bookings[i].date} kl. {bookings[i].time}</p>
+
+    //                         {bookings[i].numberOfGuests <= 6 && 
+    //                             <p>{bookings[i].numberOfGuests} personer</p>
+    //                         }
+
+    //                         {bookings[i].numberOfGuests > 6 && 
+    //                             <p>
+    //                                 <BoldSpan>! </BoldSpan>
+    //                                 {bookings[i].numberOfGuests} personer
+    //                                 <BoldSpan> !</BoldSpan></p>
+    //                         }
+    //                     </BoxBooking>
+
+    //                     <br/>
+    //                     <WordBreakOK>
+    //                         <BoldSpan>
+    //                         <UnderlineP> KundId: </UnderlineP> 
+    //                             {customer._id}
+    //                         </BoldSpan>
+    //                     </WordBreakOK> 
+    //                     <br/>
+    //                     <WordBreakOK>
+    //                         <BoldSpan>
+    //                             <UnderlineP> BokningsId: </UnderlineP>
+    //                         </BoldSpan>
+    //                         {bookings[i]._id}
+    //                     </WordBreakOK> 
+    //                     <br/>
+    //                     <ChangeButton onClick = {() => printChangeBooking(j)}> Ändra bokning </ChangeButton>
+    //                     <br/>
+    //                     <DeleteButton onClick = {() => adminDeleteBooking(bookings[i]._id, customer._id)}>Ta bort bokning</DeleteButton>
+                        
+    //                     {changeBookingAdmin === j && <div>
+    //                         <ChangeBookingDiv>
+    //                             <h3>Ändra bokningen: </h3>
+    //                             <span>Antal gäster: {numberOfGuests}</span>
+    //                             <button onClick = {() => setNumberOfGuests(numberOfGuests +1)} disabled={disablePlus}>+</button>
+    //                             <button onClick = {() => setNumberOfGuests(numberOfGuests -1)} disabled={disableMinus}>-</button>
+    //                         </ChangeBookingDiv>
+        
+    //                         <form>
+    //                             <ChangeBookingDiv>
+    //                                 <label htmlFor="date"> Datum: </label>
+    //                                 <input type="date" name="date" onChange={handleInput} onClick = {() => setDateInput(true)} />
+    //                             </ChangeBookingDiv>
+        
+    //                             <ChangeBookingDiv>
+    //                                 <label htmlFor="time"> Tid: </label>
+    //                                 <input type="text" name="time" value={changeBooking.time} onChange={handleInput} onClick = {() => setTimeInput(true)}/>                                    
+    //                             </ChangeBookingDiv>
+    //                         </form>
+        
+    //                         <ChangeBookingDiv>
+    //                             <button onClick = {() => adminChangeBooking(bookings[i]._id, bookings[i].customerId)} disabled={!dateInput || !timeInput}>Ändra bokning</button>
+    //                         </ChangeBookingDiv>
+    //                     </div>}
+    //                 </BookingDiv> 
+    //             )
+    //         } 
+    //     }
+    // });
+
     // Visa alla bokningar om ändring av bokning ej är genomförd
     let bookingView = 
     <></>
     if (!updateConfirmation) {
         bookingView = 
         <>
-            {customer}
+            {booking}
         </>        
     }
 
