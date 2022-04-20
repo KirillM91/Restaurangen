@@ -28,14 +28,15 @@ export function CheckAvailability(props: IChildToParentProps) {
     // const [pickedTime, setPickedTime] = useState(new Date().toString())
 
 
+
     let timeList18: GetBooking[] = [];
     let timeList21: GetBooking[] = [];
 
     let numberOfTables18 = []
     let numberOfTables21 = []
  
-    let sumOfTables18: number;
-    let sumOfTables21: number;
+    let sumOfTables18: number = 0;
+    let sumOfTables21: number = 0;
 
     // Funktion som körs när inputfältet för datum ändras
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
@@ -76,12 +77,13 @@ export function CheckAvailability(props: IChildToParentProps) {
         } else {
 
             //bookingsFromApi ej tom
-            for (var booking in bookingsFromApi) { 
-
+            for (let booking in bookingsFromApi) { 
 
                 //Kollar om det finns bokningar samma dag som vald datum
                 //Om inte enablas tid knappar
                 if (bookingsFromApi[booking].date === e.target.value) { 
+                    console.log("jag är i först if satsen");
+                    
                     
                     //Kollar om det finns bokningar kl 18:00 samma dag som vald datum (Likadant för kl 21)
                     //Om inte enablas tid knappar
@@ -89,6 +91,8 @@ export function CheckAvailability(props: IChildToParentProps) {
                         
                         //Skickar in nummer av numberOfGuests till timeList array
                         timeList18.push(bookingsFromApi[booking].numberOfGuests)
+                        console.log("this: ", timeList18);                        
+                      
                         //Omvandlar varje numberOfGuests till antal bord som behövs för det antalet gäster, 
                         //genom att dela varje nummer med 6 och runda upp till heltal
                         numberOfTables18 = timeList18.map(x => Math.ceil(+x/6) )
@@ -97,9 +101,9 @@ export function CheckAvailability(props: IChildToParentProps) {
                             return a + b;
                         }, 0);
 
-                        //SKickar antalet bor till Booking
-                        props.childToParentTables18(sumOfTables18);
                         
+                        //Skickar antalet bord till Booking
+                        props.childToParentTables18(sumOfTables18);                        
                         console.log("tables18", sumOfTables18)
                         
                         if (sumOfTables18 >= 15) {
@@ -111,14 +115,20 @@ export function CheckAvailability(props: IChildToParentProps) {
                             // console.log("Det går att boka kl. 18 idag")
                             setTimeTaken18(false)
                         }
+
+                        
+
                     } else {
-                        setTimeTaken18(false)
+                        setTimeTaken18(false)           
                     }
                     
                     //KL 21
                     if (bookingsFromApi[booking].time === "21:00"){ 
+                        console.log("kl 21 if");
+                        
                         
                         timeList21.push(bookingsFromApi[booking].numberOfGuests);
+
                         numberOfTables21 = timeList21.map(x => Math.ceil(+x/6) )
                         sumOfTables21 = numberOfTables21.reduce((a, b) => {
                             return a + b;
@@ -138,8 +148,10 @@ export function CheckAvailability(props: IChildToParentProps) {
                             setTimeTaken21(false)
                         }
 
+                        
+
                     } else {
-                        setTimeTaken21(false)
+                        setTimeTaken21(false)                        
                     } 
 
                     //Kollar om det finns bokningar och om datumet är en tom sträng, isf disableas tids knappar                    
@@ -150,7 +162,11 @@ export function CheckAvailability(props: IChildToParentProps) {
                 } else {
                     // console.log("Det finns ingen bokning idag. Du kan boka")
                     setTimeTaken18(false)
-                    setTimeTaken21(false)                    
+                    setTimeTaken21(false)   
+                    
+                    props.childToParentTables18(sumOfTables18);
+                    
+                    props.childToParentTables21(sumOfTables21); 
                 }
             }
         };
@@ -190,10 +206,13 @@ export function CheckAvailability(props: IChildToParentProps) {
             {/* <button onClick={checkDate} >Se tillgänglighet</button> */}
             {/* <DatePicker onChange={handleChange} value={pickedDate}></DatePicker> */}
             <TimeDiv>
-                {!timeTaken18 && <TimeButton onClick={chooseTime18}>Kl. 18</TimeButton>}
+                {/* {!timeTaken18 && <TimeButton onClick={chooseTime18}>Kl. 18</TimeButton>}
                 {timeTaken18 && <button disabled>Kl. 18</button>}
                 {!timeTaken21 && <TimeButton onClick={chooseTime21}>Kl. 21</TimeButton>}
-                {timeTaken21 && <button disabled>Kl. 21</button>}
+                {timeTaken21 && <button disabled>Kl. 21</button>} */}
+                
+                <TimeButton onClick={chooseTime18} disabled={timeTaken18}>Kl. 18</TimeButton>                
+                <TimeButton onClick={chooseTime21} disabled={timeTaken21}>Kl. 21</TimeButton>
             </TimeDiv>
         </div>
     );

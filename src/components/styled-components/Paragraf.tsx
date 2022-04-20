@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const WordBreakOK = styled.p`
+export const WordBreakOK = styled.div`
     word-wrap: break-word;
 `;
 
