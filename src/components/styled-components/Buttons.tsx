@@ -32,17 +32,22 @@ export const TimeButton = styled.button`
         background-color: #a8a6a6;
     }
 
-    &:focus {
-        background-color: #706c6c;
-        /* border: white 1px solid; */
-        color: white;
-    }
-
     &:disabled {
         background-color: #1b1a1a;
         color: #868686;
         border-color: #868686;
     }
+
+    @media screen and (min-width: 1024px) {
+        padding: 1%;
+    }
+`;
+
+export const ChoosenTimeButton = styled.button`
+    background-color: #706c6c;
+    color: #f1f1f1;
+    padding: 4%;
+    border-radius: 8px;
 
     @media screen and (min-width: 1024px) {
         padding: 1%;

@@ -4,7 +4,7 @@ import { GetBooking } from "../../models/GetBooking";
 // import { IGetBooking } from "../../models/IGetBooking";
 // import { IPostBooking } from "../../models/IPostBooking";
 import { GetBookingsService } from "../../services/GetBookingsService";
-import { TimeButton } from "../styled-components/Buttons";
+import { ChoosenTimeButton, TimeButton } from "../styled-components/Buttons";
 import { TimeDiv, TransparentDiv } from "../styled-components/Divs";
 // import Calendar from "react-calendar";
 // import DatePicker from 'sassy-datepicker';
@@ -24,16 +24,9 @@ export function CheckAvailability(props: IChildToParentProps) {
     const [timeTaken18, setTimeTaken18] = useState(true);
     const [timeTaken21, setTimeTaken21] = useState(true);
     const [pickedTime, setPickedTime] = useState("");
-    const [minDate, setMinDate] = useState<string>(
-        // new Date().getFullYear() +
-        // "-" + 
-        // (Number(new Date().getMonth()) + 1) +
-        // "-" + 
-        // new Date().getDate()
-    );
-    // const [valueDate, setValueDate] = useState(new Date());
-    // const [pickedTime, setPickedTime] = useState(new Date().toString())
-
+    const [minDate, setMinDate] = useState<string>();
+    const [picked18, setPicked18] = useState(false);
+    const [picked21, setPicked21] = useState(false);
 
     let timeList18: GetBooking[] = [];
     let timeList21: GetBooking[] = [];
@@ -110,7 +103,7 @@ export function CheckAvailability(props: IChildToParentProps) {
                 )
             })
         setBookings(bookingsFromApi);
-        console.log(bookingsFromApi);
+        // console.log(bookingsFromApi);
 
 
         
@@ -229,6 +222,9 @@ export function CheckAvailability(props: IChildToParentProps) {
         setPickedTime("18:00");
 
         props.resetNumberOfGuests(1)  
+
+        setPicked18(!picked18);
+        setPicked21(false);
     }
 
     // När klickat på kl. 21
@@ -239,29 +235,22 @@ export function CheckAvailability(props: IChildToParentProps) {
         setPickedTime("21:00");
 
         props.resetNumberOfGuests(1)   
+
+        setPicked21(!picked21);
+        setPicked18(false);
     }
 
     return(
         <div> 
-            {/* <p>CheckAvailability</p> */}
             <label htmlFor="date"> Välj datum: </label>
             <input type="date" min={minDate} onChange={handleChange} value={pickedDate} name="date"></input>
-            {/* <Calendar onChange={setValueDate} value={valueDate} /> */}
-            {/* <button onClick={checkDate} >Se tillgänglighet</button> */}
-            {/* <DatePicker onChange={handleChange} value={pickedDate}></DatePicker> */}
-            <TimeDiv>
-                {/* {!timeTaken18 && <TimeButton onClick={chooseTime18}>Kl. 18</TimeButton>}
-                {timeTaken18 && <button disabled>Kl. 18</button>}
-                {!timeTaken21 && <TimeButton onClick={chooseTime21}>Kl. 21</TimeButton>}
-                {timeTaken21 && <button disabled>Kl. 21</button>} */}
-                
-                <TimeButton onClick={chooseTime18} disabled={timeTaken18}>Kl. 18</TimeButton>                
-                <TimeButton onClick={chooseTime21} disabled={timeTaken21}>Kl. 21</TimeButton>
+            
+            <TimeDiv> 
+                {!picked18 && <TimeButton onClick={chooseTime18} disabled={timeTaken18}>Kl. 18</TimeButton>}   
+                {picked18 && <ChoosenTimeButton onClick={chooseTime18} disabled={timeTaken18}>Kl. 18</ChoosenTimeButton>}              
+                {!picked21 && <TimeButton onClick={chooseTime21} disabled={timeTaken21}>Kl. 21</TimeButton>}
+                {picked21 && <ChoosenTimeButton onClick={chooseTime21} disabled={timeTaken21}>Kl. 21</ChoosenTimeButton>}
             </TimeDiv>
         </div>
     );
 };
-
-// https://www.npmjs.com/package/react-calendar
-// om vi vill läsa mer om calender i React (är installerat)
-// https://reactjsexample.com/beautiful-minimal-and-accessible-date-picker-for-react/
