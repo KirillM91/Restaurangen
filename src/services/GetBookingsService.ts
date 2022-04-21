@@ -1,4 +1,5 @@
 import axios from "axios";
+import { IGetBooking } from "../models/IGetBooking";
 
 export class GetBookingsService {
 
@@ -6,7 +7,7 @@ export class GetBookingsService {
         let response = await axios
         .get("https://school-restaurant-api.azurewebsites.net/booking/restaurant/624aa9f0df8a9fb11c3ea8aa")
         
-        let bookings = response.data;
+        let bookings: IGetBooking[] = response.data;
         return bookings;
     }
 }
