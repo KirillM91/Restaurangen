@@ -9,6 +9,7 @@ import { PlusMinusButton, SubmitButton } from "../styled-components/Buttons";
 import { BorderDiv, PaddingDiv, TransparentDiv, WrongInputDiv } from "../styled-components/Divs";
 import { FormInput } from "../styled-components/Forms";
 import { H3, H4 } from "../styled-components/Headings";
+import { SmallText, WordBreakOK } from "../styled-components/Paragraf";
 import { CheckAvailability } from "./CheckAvailability";
 
 export function Booking() {
@@ -23,17 +24,12 @@ export function Booking() {
     const [disableSubmitInput, setDisableSubmitInput] = useState(true);
     const [confirmation, setConfirmation] = useState(false);
     const [pickedDate, setPickedDate] = useState(false);
-
-    // const [numberOfTables, setNumberOfTables] = useState({
-    //     at18: 0,
-    //     at21: 0
-    // })
     const [numberOfTables18, setNumberOfTables18] = useState(0)
     const [numberOfTables21, setNumberOfTables21] = useState(0)
 
 
     //Används för att kolla om användaren har varit inne i fältet 
-    //och ger ett felmedelande först när användaren har lämnat fältet
+    //och ger ett felmeddelande först när användaren har lämnat fältet
     const [touched, setTouched] = useState<Itouched>({
         fname: false,
         lastname: false,
@@ -75,79 +71,6 @@ export function Booking() {
             approved: false
         }
     });
-
-    //Validerar input fälten och ger meddelanden beroende på felet
-    //Borde nog flyttas till en egen komponent
-    function validation() {               
-
-        //namn
-        // trim() tar bort alla mellanslag i värdet
-        if(!customer.name.trim()) {
-            error.nameError.name = "Vänligen fyll i ditt förnamn"
-            error.nameError.approved = false
-        } else {
-            error.nameError.name = ""
-            error.nameError.approved = true
-        }
-
-        //efternamn
-        if(!customer.lastname.trim()) {
-            error.lastnameError.lastname = "Vänligen fyll i ditt efternamn"
-            error.lastnameError.approved = false
-        } else {
-            error.lastnameError.lastname = ""
-            error.lastnameError.approved = true
-        }
-
-        //email
-        // ^ = Början på strängen, $ = Strängens slut
-        // \S = Alla karaktärer utom mellanslag
-        // + Tillåter oändligt många av föregående karaktär (bara \S skulle bara tillåta en karaktär) 
-        // @ = @
-        // \. = Punkt        
-        if(!customer.email.trim()) {
-            error.emailError.email = "Vänligen fyll i din e-post"
-            error.emailError.approved = false
-        } else if (!customer.email.match(/^\S+@\S+\.\S+$/)) {
-            error.emailError.email = "Vänligen fyll i en korrekt e-post-adress"
-            error.emailError.approved = false
-        } else {
-            error.emailError.email = ""
-            error.emailError.approved = true
-        }
-
-        //telefon
-        // 07 = 07
-        // \d = Bara siffror 0-9 tillåtna
-        // {8} = Hur många \d karaktärer måste finnas (8 i det här fallet) 
-        if(!customer.phone.trim()) {
-            error.phoneError.phone = "Vänligen fyll i ditt telefonnummer"
-            error.phoneError.approved = false
-        } else if (!customer.phone.match(/^07\d{8}$/)) {
-            error.phoneError.phone = "Vänligen fyll i ett korrekt telefonnummer (07[8 siffror])"
-            error.phoneError.approved = false
-        } else {
-            error.phoneError.phone = ""
-            error.phoneError.approved = true
-        }
-        
-        setError(error);        
-    };
-
-    //Sätter användarens värden, från förmuläret, in i newBooking.customer objektet
-    function handleChange(event: ChangeEvent<HTMLInputElement>) {
-        let name = event.target.name;        
-        setCustomer({...customer, [name]: event.target.value});
-    };
-
-    //Skapar en post request med en ny bokning
-    function submitBooking(){
-     
-            PostNewBooking(newBooking);
-        
-        setBookingOk(true);     
-        setConfirmation(true);   
-    };
 
     //Kollar om alla fält är korrekt ifyllda och att GDPR boxen är intryckt, innan användaren kan skicka bokningen
     useEffect(() => {
@@ -204,6 +127,79 @@ export function Booking() {
 
     }, [numberOfGuests]);
 
+    //Validerar input fälten och ger meddelanden beroende på felet
+    function validation() {               
+
+        //förnamn
+        // trim() tar bort alla mellanslag i värdet
+        if(!customer.name.trim()) {
+            error.nameError.name = "Vänligen fyll i ditt förnamn"
+            error.nameError.approved = false
+        } else {
+            error.nameError.name = ""
+            error.nameError.approved = true
+        }
+
+        //efternamn
+        if(!customer.lastname.trim()) {
+            error.lastnameError.lastname = "Vänligen fyll i ditt efternamn"
+            error.lastnameError.approved = false
+        } else {
+            error.lastnameError.lastname = ""
+            error.lastnameError.approved = true
+        }
+
+        //email
+        // ^ = Början på strängen, $ = Strängens slut
+        // \S = Alla karaktärer utom mellanslag
+        // + Tillåter oändligt många av föregående karaktär (bara \S skulle bara tillåta en karaktär) 
+        // @ = @
+        // \. = Punkt        
+        if(!customer.email.trim()) {
+            error.emailError.email = "Vänligen fyll i din e-post"
+            error.emailError.approved = false
+        } else if (!customer.email.match(/^\S+@\S+\.\S+$/)) {
+            error.emailError.email = "Vänligen fyll i en korrekt e-post-adress"
+            error.emailError.approved = false
+        } else {
+            error.emailError.email = ""
+            error.emailError.approved = true
+        }
+
+        //telefon
+        // 07 = 07
+        // \d = Bara siffror 0-9 tillåtna
+        // {8} = Hur många \d karaktärer måste finnas (8 i det här fallet) 
+        if(!customer.phone.trim()) {
+            error.phoneError.phone = "Vänligen fyll i ditt telefonnummer"
+            error.phoneError.approved = false
+        } else if (!customer.phone.match(/^07\d{8}$/)) {
+            error.phoneError.phone = "Vänligen fyll i ett korrekt telefonnummer (07[8 siffror])"
+            error.phoneError.approved = false
+        } else {
+            error.phoneError.phone = ""
+            error.phoneError.approved = true
+        }
+        setError(error);        
+    };
+
+    //Sätter användarens värden, från formuläret, in i newBooking.customer objektet
+    function handleChange(event: ChangeEvent<HTMLInputElement>) {
+        
+        let name = event.target.name;        
+        
+        setCustomer({...customer, [name]: event.target.value});
+    };
+
+    //Skapar en post request med en ny bokning
+    function submitBooking(){
+     
+        PostNewBooking(newBooking);
+        
+        setBookingOk(true);     
+        setConfirmation(true);   
+    };
+
     // Tar emot värde från CheckAvailability
     function childToParentDate(childDataDate: string) {
         // console.log("asd", childDataDate);
@@ -211,21 +207,20 @@ export function Booking() {
     };
 
     function childToParentTime(childDataTime: string) {
-        // console.log("time ", childDataTime);
+
         setNewBooking({...newBooking, time: childDataTime});
+
         setDisableInput(false);
         setPickedDate(true);
     };
 
     function childToParentTables18(childDataTables18: number) {
-        // console.log("child data 18", childDataTables18)
-        // console.log("number of tables in parent 18", numberOfTables18);
+
         setNumberOfTables18(childDataTables18);
     }
 
     function childToParentTables21(childDataTables21: number) {
-        // console.log("child data 21", childDataTables21)
-        // console.log("number of tables in parent 21", numberOfTables21);
+
         setNumberOfTables21(childDataTables21);
     }
 
@@ -233,25 +228,27 @@ export function Booking() {
         setNumberOfGuests(childData)
     }
 
+    // Om kunden valt datum och tid ska kunden kunna välja antal gäster, 
+    // fylla i uppgifter om sig själv, godkänna GDPR och bekräfta bokning
     let showInputUser =
     <></>
     if (pickedDate) {
         showInputUser = 
         <div>
+            <div>
+                {newBooking.time === "18:00" && <WordBreakOK>Det finns {15 - numberOfTables18} lediga bord {newBooking.date} kl. {newBooking.time}</WordBreakOK>}
+                {newBooking.time === "21:00" && <WordBreakOK>Det finns {15 - numberOfTables21} lediga bord {newBooking.date} kl. {newBooking.time}</WordBreakOK>}
+                <SmallText>Varje bord har upp till 6 sittplatser.</SmallText>
+            </div>
+
             <BorderDiv>
                 <p>Antal gäster: {numberOfGuests} </p>                
                 <PlusMinusButton onClick = {() => setNumberOfGuests(numberOfGuests -1)} disabled={disableMinus || disableInput}>-</PlusMinusButton>
                 <PlusMinusButton onClick = {() => setNumberOfGuests(numberOfGuests +1)} disabled={disablePlus || disableInput}>+</PlusMinusButton>
             </BorderDiv>
 
-            <div>
-                {newBooking.time === "18:00" && <p>Lediga bord vid valt tillfälle: {15 - numberOfTables18}</p>}
-                {newBooking.time === "21:00" && <p>Lediga bord vid valt tillfälle: {15 - numberOfTables21}</p>}
-                <p>Varje bord har upp till 6 sittplatser.</p>
-            </div>
-
             <form>
-            <label htmlFor="name"> Namn: </label>
+            <label htmlFor="name"> Förnamn: </label>
             <FormInput
                 approved={error.nameError.approved}
                 touched={touched.fname!}                    
@@ -294,7 +291,7 @@ export function Booking() {
             />
             <br/>
 
-            <label htmlFor="phone"> Telefon nr: </label>
+            <label htmlFor="phone"> Telefonnr: </label>
             <FormInput
                 approved={error.phoneError.approved}
                 touched={touched.phone!}
@@ -324,6 +321,7 @@ export function Booking() {
         </div>
     }
 
+    // Kunden ska kunna välja datum och tid för bokningen och se tillgängligheten
     let makeBooking = 
         <></>
     if (!confirmation) {
@@ -347,10 +345,6 @@ export function Booking() {
                 {touched.email && <p>{error.emailError.email}</p>}
                 {touched.phone && <p>{error.phoneError.phone}</p>}
             </WrongInputDiv>
-
-            {/* <button disabled={disableSubmitInput} onClick={submitBooking}>Boka bord</button> */}
-            
-            {/* {bookingDone} */}
         </div>
     } 
 
@@ -360,7 +354,9 @@ export function Booking() {
     if (confirmation) {
         bookingDone =
         <TransparentDiv>
-            <H3>Din bokning har nu genomförts. Vi ser fram emot ditt besök!</H3>
+            <H3>Din bokning har nu genomförts.</H3>
+            <br/>
+            <H3>Vi ser fram emot ditt besök den {newBooking.date} kl. {newBooking.time}!</H3>
             <br/>
             <H3>En bekräftelse har sänts via mail.</H3>
             <br/>

@@ -1,4 +1,4 @@
 export interface IApproved {
-    approved: boolean ,
+    approved: boolean,
     touched: boolean
-}
+};

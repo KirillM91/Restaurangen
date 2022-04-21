@@ -3,4 +3,4 @@ export interface Itouched {
     lastname?: boolean,
     email?: boolean,
     phone?: boolean
-}
+};
