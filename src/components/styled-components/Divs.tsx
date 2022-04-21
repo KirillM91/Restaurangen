@@ -42,11 +42,11 @@ export const TimeDiv = styled.div`
 `;
 
 export const PaddingDiv = styled.div`
-    padding: 5%;
+    padding: 1.5em;    
 
-    @media screen and (min-width: 1024px) {
+    /* @media screen and (min-width: 1024px) {
         padding: 1%;
-    }
+    } */
 `;
 
 export const BorderDiv = styled.div`
@@ -61,7 +61,7 @@ export const BorderDiv = styled.div`
 `;
 
 export const BorderBookingDiv = styled.div`
-    padding: 5%;
+    padding-top: 5%;
     border-top: 1px solid white;
     margin-left: 4%; 
     margin-right: 4%; 
@@ -85,7 +85,9 @@ export const TransparentDiv = styled.div`
 
 export const WrongInputDiv = styled.div`
     color: red;
-    margin: 2%;
+    height: 75px;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
 `;
 
 export const NotFoundDiv = styled.div`
@@ -104,10 +106,10 @@ export const HomeDiv = styled.div`
 
     @media screen and (min-width: 1024px) {
         width: auto;
-        background-color: transparent;
+        background-color: #000000b0;
         padding: 1%;
         border-radius: 10px;
-        position: fixed;
+        position: absolute;
         right: 5%;
         bottom: 15%;
     }
@@ -119,3 +121,53 @@ export const BoxBooking = styled.div`
     margin-bottom: 1%;
     border-radius: 5px;
 `;
+
+export const CheckAvailabilityDiv = styled.div`
+    margin-top: 0;
+`;
+
+export const Footer = styled.footer`
+    color: gray;
+    text-align: center;
+    font-size: 0.75rem;
+    padding-top: 1.25em;
+`;
+
+export const MenuDiv = styled.div`
+    display: flex;
+    flex-direction: row;
+    width: 60%;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1em;
+    border-top: 2px solid white;
+    padding-top: 1em;
+
+    @media screen and (max-width: 1024px) {
+        flex-direction: column;
+    }
+`;
+
+export const MenuDiv2 = styled.div`
+    display: flex;
+    flex-direction: row;
+    width: 60%;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1em;
+    border-top: 1px solid white;
+    padding-top: 1em;
+
+    @media screen and (max-width: 1024px) {
+        flex-direction: column-reverse;
+    }
+`;
+
+export const MenuSection = styled.section`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: fit-content;
+`;
+

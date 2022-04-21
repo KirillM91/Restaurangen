@@ -78,12 +78,14 @@ export function Contact() {
     };
     
     return(
+        <>
         <section>
             <PaddingDiv>
                 <H2>Kontakta oss</H2>
-                <H4>Tel: 08- 123 456 789</H4>
-                <H4>E-post: kitchenonfire@restaurang.se</H4>
             </PaddingDiv>
+            <H4>Tel: 08- 123 456 789</H4>
+            <H4>E-post: kitchenonfire@restaurang.se</H4>
+            
 
             <img id="muffinFireImg" src={require("../assets/muffin-fire.jpg")} alt="red-chili-in-flames"/>
 
@@ -95,8 +97,11 @@ export function Contact() {
                     543 21 Stockholm
                 </H4>
             </PaddingDiv>
-
-            <BorderDiv>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <PaddingDiv>
                 <H3>Behöver du avboka?</H3>
                 <H4>Vänligen ange ditt bokningsnummer: </H4>
                 <input 
@@ -109,7 +114,8 @@ export function Contact() {
                 <button disabled={disableSubmitInput} onClick = {() => customerDeleteBooking(bookingId)}>Avboka</button>
                 {bookingCancelled}
                 {touched.bookingIdNr && <p>{error.bookingIdError.bookingIdNr}</p>}
-            </BorderDiv>
+            </PaddingDiv>
         </section>
+        </>
     );
 };

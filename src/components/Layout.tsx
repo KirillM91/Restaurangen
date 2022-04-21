@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
+import { Footer } from "./styled-components/Divs";
 
 export function Layout() {
 
@@ -38,7 +39,7 @@ export function Layout() {
                 </div>
             </header>
             <main><Outlet></Outlet></main>
-            <footer>©</footer>
+            <Footer>A school project at Medieinstitutet made by Fanny Lundberg and Kirill Missarov</Footer>
         </>
     );
 };

@@ -13,3 +13,7 @@ export const SmallText = styled.p`
     padding-top: 1%;
     padding-bottom: 1%;
 `;
+
+export const MenuParagraph = styled.p`
+    display: inline-block;
+`;
