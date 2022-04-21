@@ -3,4 +3,4 @@ export interface IPostCustomer {
     lastname: string,
     email: string,
     phone: string
-}      
+};      

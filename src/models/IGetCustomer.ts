@@ -4,4 +4,4 @@ export interface IGetCustomer {
     lastname: string,
     email: string,
     phone: string
-  }
+};

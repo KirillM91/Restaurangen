@@ -7,3 +7,9 @@ export const WordBreakOK = styled.div`
 export const UnderlineP = styled.p`
     text-decoration: underline;
 `;
+
+export const SmallText = styled.p`
+    font-size: 0.75rem;
+    padding-top: 1%;
+    padding-bottom: 1%;
+`;

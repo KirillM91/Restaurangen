@@ -6,6 +6,7 @@ export const DeleteButton = styled.button`
     padding: 1%;
     border-radius: 5px;
     width: 110px;
+
     @media screen and (min-width: 1024px) {
         padding: 0.5%;
     }
@@ -17,6 +18,7 @@ export const ChangeButton = styled.button`
     padding: 1%;
     border-radius: 5px;
     width: 110px;
+    
     @media screen and (min-width: 1024px) {
         padding: 0.5%;
     }

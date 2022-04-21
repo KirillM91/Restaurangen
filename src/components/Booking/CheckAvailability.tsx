@@ -1,13 +1,9 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-// import { DateAndTime } from "../../models/DateAndTime";
 import { GetBooking } from "../../models/GetBooking";
-// import { IGetBooking } from "../../models/IGetBooking";
-// import { IPostBooking } from "../../models/IPostBooking";
 import { GetBookingsService } from "../../services/GetBookingsService";
 import { ChoosenTimeButton, TimeButton } from "../styled-components/Buttons";
-import { TimeDiv, TransparentDiv } from "../styled-components/Divs";
-// import Calendar from "react-calendar";
-// import DatePicker from 'sassy-datepicker';
+import { TimeDiv } from "../styled-components/Divs";
+import { DateInput } from "../styled-components/Forms";
 
 interface IChildToParentProps {
     childToParentDate(newBookingDate: string): void;
@@ -103,9 +99,6 @@ export function CheckAvailability(props: IChildToParentProps) {
                 )
             })
         setBookings(bookingsFromApi);
-        // console.log(bookingsFromApi);
-
-
         
         //Om bookingsFromApi är helt tom enablas tid knappar
         if (bookingsFromApi.length <= 0) {
@@ -117,11 +110,11 @@ export function CheckAvailability(props: IChildToParentProps) {
             for (let booking in bookingsFromApi) { 
 
                 //Kollar om det finns bokningar samma dag som vald datum
-                //Om inte enablas tid knappar
+                //Om inte enablas tidknappar
                 if (bookingsFromApi[booking].date === e.target.value) {
                     
                     //Kollar om det finns bokningar kl 18:00 samma dag som vald datum (Likadant för kl 21)
-                    //Om inte enablas tid knappar
+                    //Om inte enablas tidknappar
                     if (bookingsFromApi[booking].time === "18:00") {
                         
                         //Skickar in nummer av numberOfGuests till timeList array
@@ -135,31 +128,21 @@ export function CheckAvailability(props: IChildToParentProps) {
                             return a + b;
                         }, 0);
 
-                        
                         //Skickar antalet bord till Booking
                         props.childToParentTables18(sumOfTables18);                        
                         console.log("tables18", sumOfTables18)
                         
                         if (sumOfTables18 >= 15) {
-                            // console.log("Det är fullbokat kl. 18 idag")
-                            setTimeTaken18(true)
-                            console.log("timeTaken18", timeTaken18);                            
-                            
+                            setTimeTaken18(true)                           
                         } else {
-                            // console.log("Det går att boka kl. 18 idag")
                             setTimeTaken18(false)
                         }
-
-                        
-
                     } else {
                         setTimeTaken18(false)           
                     }
                     
                     //KL 21
                     if (bookingsFromApi[booking].time === "21:00"){ 
-                        console.log("kl 21 if");
-                        
                         
                         timeList21.push(bookingsFromApi[booking].numberOfGuests);
 
@@ -169,37 +152,27 @@ export function CheckAvailability(props: IChildToParentProps) {
                         }, 0);
 
                         props.childToParentTables21(sumOfTables21);
-                        
-                        console.log("tables21", sumOfTables21)
 
                         if (sumOfTables21 >= 15) {
-                            // console.log("Det är fullbokat kl. 21 idag")
-                            setTimeTaken21(true)
-                            console.log("timeTaken21", timeTaken21);
-                            
+                            setTimeTaken21(true)  
                         } else {
-                            // console.log("Det går att boka kl. 21 idag")
                             setTimeTaken21(false)
                         }
-
-                        
 
                     } else {
                         setTimeTaken21(false)                        
                     } 
 
-                    //Kollar om det finns bokningar och om datumet är en tom sträng, isf disableas tids knappar                    
+                //Kollar om det finns bokningar och om datumet är en tom sträng, isf disableas tidsknappar                    
                 } else if (bookingsFromApi && e.target.value === "") {                    
                         setTimeTaken18(true)
                         setTimeTaken21(true)
                     
                 } else {
-                    // console.log("Det finns ingen bokning idag. Du kan boka")
                     setTimeTaken18(false)
                     setTimeTaken21(false)   
                     
-                    props.childToParentTables18(sumOfTables18);
-                    
+                    props.childToParentTables18(sumOfTables18);   
                     props.childToParentTables21(sumOfTables21); 
                 }
             }
@@ -214,34 +187,32 @@ export function CheckAvailability(props: IChildToParentProps) {
 
     // När klickat på kl. 18
     function chooseTime18() {
-        // console.log("Valt kl. 18");
 
         props.childToParentTime("18:00");
         setPickedTime("18:00");
 
         props.resetNumberOfGuests(1)  
 
-        setPicked18(!picked18);
+        setPicked18(true);
         setPicked21(false);
     }
 
     // När klickat på kl. 21
     function chooseTime21() {
-        // console.log("Valt kl. 21");
 
         props.childToParentTime("21:00");
         setPickedTime("21:00");
 
         props.resetNumberOfGuests(1)   
 
-        setPicked21(!picked21);
+        setPicked21(true);
         setPicked18(false);
     }
 
     return(
         <div> 
             <label htmlFor="date"> Välj datum: </label>
-            <input type="date" min={minDate} onChange={handleChange} value={pickedDate} name="date"></input>
+            <DateInput type="date" min={minDate} onChange={handleChange} value={pickedDate} name="date"></DateInput>
             
             <TimeDiv> 
                 {!picked18 && <TimeButton onClick={chooseTime18} disabled={timeTaken18}>Kl. 18</TimeButton>}   

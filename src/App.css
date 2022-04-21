@@ -159,7 +159,7 @@ input {
     margin-bottom: 2%;
 }
 
-/* // Länk */
+/* Länk */
 a {
     color: white;
 }
@@ -220,7 +220,7 @@ a {
         justify-content: space-between;
         position: fixed;
         width: 40%;
-        top: -43%;
+        top: -38%;
         right: 5%;
     }
 
@@ -230,7 +230,38 @@ a {
 
     .layout-header .layout-nav-wrapper .menu-closed.layout-nav,
     .layout-header .layout-nav-wrapper .menu-open.layout-nav {
-        transform: none;    
+        transform: none;   
+        height: 10%; 
     }
     
+}
+
+@media screen and (min-width: 1200px) {
+    .layout-header .layout-nav-wrapper .layout-nav ul {
+        top: -40%;
+    }
+}
+
+@media screen and (min-width: 1480px) {
+    .layout-header .layout-nav-wrapper .layout-nav ul {
+        top: -42%;
+    }
+}
+
+@media screen and (min-width: 1700px) {
+    .layout-header .layout-nav-wrapper .layout-nav ul {
+        top: -43%;
+    }
+}
+
+@media screen and (min-width: 2000px) {
+    .layout-header .layout-nav-wrapper .layout-nav ul {
+        top: -44%;
+    }
+}
+
+@media screen and (min-width: 2300px) {
+    .layout-header .layout-nav-wrapper .layout-nav ul {
+        top: -46%;
+    }
 }

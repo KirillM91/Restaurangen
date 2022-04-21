@@ -15,4 +15,4 @@ export interface IError {
         phone: string,
         approved: boolean
     }
-}
+};

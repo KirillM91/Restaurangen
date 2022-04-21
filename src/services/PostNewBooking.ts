@@ -10,8 +10,5 @@ export function PostNewBooking(newBooking: IPostBooking){
     .then(response => {console.log(response.data)})
     .catch(error => {console.log(error)});
 
-    console.log(newBooking);
-
-    // setBookingOk(true);
-    
+    // console.log(newBooking); 
 }

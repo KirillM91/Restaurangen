@@ -36,20 +36,23 @@ export function Contact() {
         validation();   
     }, [bookingId]);
 
-    //Validerar input fälten och ger meddelanden beroende på felet
+    //Validerar input-fälten och ger meddelanden beroende på felet
     function validation() {               
 
-        if (!bookingId.match(/^\S{24}$/)) {
-            error.bookingIdError.bookingIdNr = "Vänligen fyll i en korrekt bokningsId";
+        if(!bookingId) {
+            error.bookingIdError.bookingIdNr = "Ditt bokningsId består av 24 tecken och finns i det bekräftelsemail du fick vid bokningen."
+            error.bookingIdError.approved = false
+        } else if (!bookingId.match(/^\S{24}$/)) {
+            error.bookingIdError.bookingIdNr = "Vänligen fyll i en korrekt bokningsID";
             error.bookingIdError.approved = false;
         } else {
             error.bookingIdError.bookingIdNr = ""
             error.bookingIdError.approved = true;
         }
-
         setError(error);    
     }
 
+    // Hanterar input för avbokning
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
         let id: string = e.target.value;
         
