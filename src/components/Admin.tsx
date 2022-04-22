@@ -7,8 +7,8 @@ import { updateBooking } from "../services/ChangeBookingService";
 import { deleteBooking } from "../services/DeleteBookingService";
 import { GetBookingsService } from "../services/GetBookingsService";
 import { GetCustomerService } from "../services/GetCustomerService";
-import { ChangeButton, DeleteButton } from "./styled-components/Buttons";
-import { BookingDiv, BorderBookingDiv, BoxBooking, ChangeBookingDiv, TransparentDiv } from "./styled-components/Divs";
+import { AdminButton, ChangeButton, DeleteButton } from "./styled-components/Buttons";
+import { BookingDiv, BorderBookingDiv, BoxBooking, ChangeBookingDiv, PaddingDiv, TransparentDiv } from "./styled-components/Divs";
 import { H2, H3, H4 } from "./styled-components/Headings";
 import { UnderlineP, WordBreakOK } from "./styled-components/Paragraf";
 import { BoldSpan } from "./styled-components/Span";
@@ -42,7 +42,6 @@ export function Admin() {
         .then(bookingsResponse => {
             let sortedBookingResponse = bookingsResponse.sort((a, b) => +new Date(a.date) - +new Date(b.date))
             setBookings(sortedBookingResponse);
-            // console.log("Bokningar:", sortedBookingResponse)
         }) 
     }, [updateConfirmation]);
 
@@ -59,11 +58,6 @@ export function Admin() {
             }); 
         }   
     }, [bookings]);
-
-    // function checkCustomerArray() {
-    //     console.log("customers", customers);
-    //     console.log("bookings", bookings);
-    // };
 
     //Uppdaterar renderingen av antalet gäster samt uppdaterar numberOfGuests i changeBooking
     useEffect(() => {
@@ -82,8 +76,6 @@ export function Admin() {
     
         deleteBooking(bookingId);
 
-        //===WIP===
-
         let bookingIds = bookings.map(customerId => customerId.customerId)
         let i = bookingIds.indexOf(customerId)        
         bookings.splice(i, 1)
@@ -96,14 +88,6 @@ export function Admin() {
         customers.splice(j, 1)
         
         setCustomers(customers.filter(item => item._id !== customerId))
-        
-
-        // console.log("i: ", i, "j: ", j)
-        // console.log(customerId);
-        
-
-        // console.log("delet funk customers", bookings);
-        // console.log("delet funk bookings", customers);
     };
 
 
@@ -119,7 +103,6 @@ export function Admin() {
     
         updateBooking(bookingId, changeBooking, customerId);
 
-
         setUpdateConfirmation(true);
     };
 
@@ -128,7 +111,6 @@ export function Admin() {
         setChangeBookingAdmin(
             changeBookingAdmin === j ? null : j
         )
-        // console.log(j)
     };
 
     // Om bokning är genomförd ska bekräftelse visas
@@ -192,28 +174,21 @@ export function Admin() {
                         {changeBookingAdmin === j && <div>
                             <ChangeBookingDiv>
                                 <h3>Ändra bokningen: </h3>
+                                <br/>
                                 <span>Antal gäster: {numberOfGuests}</span>
-                                <button onClick = {() => setNumberOfGuests(numberOfGuests -1)} disabled={disableMinus}>-</button>
-                                <button onClick = {() => setNumberOfGuests(numberOfGuests +1)} disabled={disablePlus}>+</button>
-                            </ChangeBookingDiv>
-        
-                            <form>
-                                <ChangeBookingDiv>
+                                <AdminButton onClick = {() => setNumberOfGuests(numberOfGuests -1)} disabled={disableMinus}>-</AdminButton>
+                                <AdminButton onClick = {() => setNumberOfGuests(numberOfGuests +1)} disabled={disablePlus}>+</AdminButton>
+                                
+                                <form>
                                     <label htmlFor="date"> Datum: </label>
                                     <input type="date" name="date" onChange={handleInput} onClick = {() => setDateInput(true)} />
-                                </ChangeBookingDiv>
-                            </form>
-                                <ChangeBookingDiv>
-                                    {/* <label htmlFor="time"> Tid: </label> */}                                    
-                                    <p>Ny tid: {changeBooking.time}</p>
-                                    {/* <input type="text" name="time" value={changeBooking.time} onChange={handleInput} onClick = {() => setTimeInput(true)}/> */}
-                                    <button onClick={() => { setChangeBooking({...changeBooking, time: "18:00"}); setTimeInput(true); }}>Kl. 18</button>  
-                                    <button onClick={() => { setChangeBooking({...changeBooking, time: "21:00"}); setTimeInput(true); }}>Kl. 21</button>                                   
-                                </ChangeBookingDiv>
-                            
-        
-                            <ChangeBookingDiv>
-                                <button onClick = {() => adminChangeBooking(booking._id, booking.customerId)} disabled={!dateInput || !timeInput}>Ändra bokning</button>
+                                </form>                                  
+                                
+                                <p>Ny tid: {changeBooking.time}</p>
+                                <AdminButton onClick={() => { setChangeBooking({...changeBooking, time: "18:00"}); setTimeInput(true); }}>Kl. 18</AdminButton>  
+                                <AdminButton onClick={() => { setChangeBooking({...changeBooking, time: "21:00"}); setTimeInput(true); }}>Kl. 21</AdminButton>                                   
+                                <br/>
+                                <AdminButton onClick = {() => adminChangeBooking(booking._id, booking.customerId)} disabled={!dateInput || !timeInput}>Ändra bokning</AdminButton>
                             </ChangeBookingDiv>
                         </div>}
                     </BookingDiv> 
@@ -234,10 +209,12 @@ export function Admin() {
 
     return(
         <section>
-            <H2>Admin</H2>
+            <PaddingDiv>
+                <H2>Admin</H2>
+            </PaddingDiv>
             <TransparentDiv>
                 <p>
-                    <BoldSpan>OBS!</BoldSpan> 
+                    <BoldSpan>OBS! </BoldSpan> 
                     Om en kund har en bokning och vill ändra till fler än sex personer 
                     så behöver en avbokning göras för att sedan göra en ny bokning på bokningssidan.
                 </p>
@@ -249,12 +226,11 @@ export function Admin() {
 
             <br/>
             
-            <BorderBookingDiv> 
+            <BorderBookingDiv>  
                 <H3>Bokningar</H3>
                 {bookingView}
                 {updateDone}
             </BorderBookingDiv>
-            {/* <button onClick={checkCustomerArray}>Click</button> */}
         </section>
     );
 };

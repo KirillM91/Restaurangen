@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { IApproved } from "../../models/IApproved";
 
-export const DateInput = styled.input`
+export const Input = styled.input`
     height: 1.8rem;
     border: none;
     border-radius: 5px;

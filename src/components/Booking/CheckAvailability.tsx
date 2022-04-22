@@ -3,7 +3,7 @@ import { GetBooking } from "../../models/GetBooking";
 import { GetBookingsService } from "../../services/GetBookingsService";
 import { ChoosenTimeButton, TimeButton } from "../styled-components/Buttons";
 import { CheckAvailabilityDiv, TimeDiv } from "../styled-components/Divs";
-import { DateInput } from "../styled-components/Forms";
+import { Input } from "../styled-components/Forms";
 
 interface IChildToParentProps {
     childToParentDate(newBookingDate: string): void;
@@ -212,7 +212,7 @@ export function CheckAvailability(props: IChildToParentProps) {
     return(
         <CheckAvailabilityDiv> 
             <label htmlFor="date"> Välj datum: </label>
-            <DateInput type="date" min={minDate} onChange={handleChange} value={pickedDate} name="date"></DateInput>
+            <Input type="date" min={minDate} onChange={handleChange} value={pickedDate} name="date"></Input>
             
             <TimeDiv> 
                 {!picked18 && <TimeButton onClick={chooseTime18} disabled={timeTaken18}>Kl. 18</TimeButton>}   

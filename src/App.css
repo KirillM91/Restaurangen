@@ -1,6 +1,6 @@
 /* Startsidan */
 #homeBgImg {
-    background-image: url("./assets/chili.jpeg");
+    background-image: url("./assets/chilli-bg-mobile.jpg");
     background-size: cover;
     background-position: center;
     width: 100vw;
@@ -24,7 +24,7 @@
     border-bottom: 1px solid white;
     margin-left: 4%;
     margin-right: 4%;
-    margin-bottom: 0.5em;
+    align-items: center;
 }
 
 .layout-header .layout-logotype { 
@@ -32,18 +32,17 @@
     font-weight: bold;  
     display: inline-block;
     font-size: 1.8rem; 
-    margin-bottom: 0.5em;   
+    margin-bottom: 0.5em;
 }
 
 .layout-header .layout-logotype .layout-logotype-fire {
-    color: #ff5100;
+    color: #fd3301;
 }
 
 .layout-header .layout-nav-wrapper{    
     display: flex; 
     height: fit-content;
     width: fit-content;    
-    padding-top: 8px;
 }
 
 .layout-header .layout-nav-wrapper .layout-nav {
@@ -172,9 +171,9 @@ a {
 /* Media query för skärmar större än 768 px */
 @media screen and (min-width: 768px) {
     #muffinFireImg {
-    max-width: 350px;
-    height: auto;
-    border-radius: 5%;
+        max-width: 350px;
+        height: auto;
+        border-radius: 5%;
     }
 }
 
@@ -203,9 +202,9 @@ a {
     }
 
     #muffinFireImg {
-    max-width: 350px;
-    height: auto;
-    border-radius: 5%;
+        max-width: 350px;
+        height: auto;
+        border-radius: 5%;
     }
 
 
@@ -238,7 +237,6 @@ a {
         top: 0;
         padding-top: 0;
         right: 5%;
-        
     }
 
     .layout-header .layout-nav-wrapper .layout-nav ul li {
@@ -271,7 +269,6 @@ a {
         transform: none;   
         height: 80px; 
     }
-    
 }
 
 @media screen and (min-width: 1200px) {
@@ -279,33 +276,3 @@ a {
         width: 40%;
     }
 }
-
-/* @media screen and (min-width: 1200px) {
-    .layout-header .layout-nav-wrapper .layout-nav ul {
-        top: -40%;
-    }
-}
-
-@media screen and (min-width: 1480px) {
-    .layout-header .layout-nav-wrapper .layout-nav ul {
-        top: -42%;
-    }
-}
-
-@media screen and (min-width: 1700px) {
-    .layout-header .layout-nav-wrapper .layout-nav ul {
-        top: -43%;
-    }
-}
-
-@media screen and (min-width: 2000px) {
-    .layout-header .layout-nav-wrapper .layout-nav ul {
-        top: -44%;
-    }
-}
-
-@media screen and (min-width: 2300px) {
-    .layout-header .layout-nav-wrapper .layout-nav ul {
-        top: -46%;
-    }
-} */

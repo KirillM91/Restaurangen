@@ -24,6 +24,8 @@ export const ChangeBookingDiv = styled.div`
     width: 100%;
     background-color: #5e5c5c;
     padding: 1%;
+    border-radius: 5%;
+    margin-top: 4%;
 `;
 
 export const TimeDiv = styled.div`
@@ -43,15 +45,11 @@ export const TimeDiv = styled.div`
 
 export const PaddingDiv = styled.div`
     padding: 1.5em;    
-
-    /* @media screen and (min-width: 1024px) {
-        padding: 1%;
-    } */
 `;
 
 export const BorderDiv = styled.div`
     padding: 5%;
-    border-top: 1px solid white;
+    border-top: 1px solid #383737ae;
     margin-left: 4%; 
     margin-right: 4%; 
 
@@ -140,8 +138,9 @@ export const MenuDiv = styled.div`
     align-items: center;
     justify-content: center;
     margin-bottom: 1em;
-    border-top: 2px solid white;
+    border-top: 1px solid white;
     padding-top: 1em;
+    gap: 15%;
 
     @media screen and (max-width: 1024px) {
         flex-direction: column;
@@ -157,6 +156,7 @@ export const MenuDiv2 = styled.div`
     margin-bottom: 1em;
     border-top: 1px solid white;
     padding-top: 1em;
+    gap: 15%;
 
     @media screen and (max-width: 1024px) {
         flex-direction: column-reverse;
