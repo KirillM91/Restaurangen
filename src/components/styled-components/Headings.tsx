@@ -1,5 +1,19 @@
 import styled from "styled-components";
 
+export const H1 = styled.h1`
+    display: none;
+    font-size: 5rem;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; 
+    font-weight: bold;
+    position: absolute;
+    top: 40%;
+    left: 25%;
+    
+    @media screen and (min-width: 1024px) {
+        display: inline-block;  
+    }
+`;
+
 export const H2 = styled.h2`
     font-size: 1.8rem;
     margin-bottom: 2%;

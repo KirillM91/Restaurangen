@@ -202,7 +202,7 @@ export function Booking() {
 
     // Tar emot värde från CheckAvailability
     function childToParentDate(childDataDate: string) {
-        // console.log("asd", childDataDate);
+
         setNewBooking({...newBooking, date: childDataDate});
     };
 
@@ -235,11 +235,11 @@ export function Booking() {
     if (pickedDate) {
         showInputUser = 
         <div>
-            <div>
+            <PaddingDiv>
                 {newBooking.time === "18:00" && <WordBreakOK>Det finns {15 - numberOfTables18} lediga bord {newBooking.date} kl. {newBooking.time}</WordBreakOK>}
                 {newBooking.time === "21:00" && <WordBreakOK>Det finns {15 - numberOfTables21} lediga bord {newBooking.date} kl. {newBooking.time}</WordBreakOK>}
                 <SmallText>Varje bord har upp till 6 sittplatser.</SmallText>
-            </div>
+            </PaddingDiv>
 
             <BorderDiv>
                 <p>Antal gäster: {numberOfGuests} </p>                
@@ -342,10 +342,8 @@ export function Booking() {
                     childToParentTables18={childToParentTables18}
                     childToParentTables21={childToParentTables21}
                 ></CheckAvailability>
-             
                 
             {showInputUser}  
-
 
         </div>
     } 

@@ -29,6 +29,8 @@ export const TimeButton = styled.button`
     color: black;
     padding: 4%;
     border-radius: 8px;
+    border: none;
+    margin: 1%;
 
     &:hover {
         background-color: #a8a6a6;
@@ -37,7 +39,7 @@ export const TimeButton = styled.button`
     &:disabled {
         background-color: #1b1a1a;
         color: #868686;
-        border-color: #868686;
+        border: #868686 1px solid;
     }
 
     @media screen and (min-width: 1024px) {
@@ -50,11 +52,13 @@ export const ChoosenTimeButton = styled.button`
     color: #f1f1f1;
     padding: 4%;
     border-radius: 8px;
+    border: none;
+    margin: 1%;
 
     &:disabled {
         background-color: #1b1a1a;
         color: #868686;
-        border-color: #868686;
+        border: #868686 1px solid;
     }
 
     @media screen and (min-width: 1024px) {
@@ -65,13 +69,16 @@ export const ChoosenTimeButton = styled.button`
 export const SubmitButton = styled.button`
     background-color: #464242;
     color: white;
-    padding: 2%;
+    padding: 1.5%;
     border-radius: 8px;
     margin-bottom: 1rem;
+    border: none;
+    margin: 1.5%; 
 
     &:disabled {
         background-color: #1b1a1a;
         color: black;
+        border: #868686 1px solid;
     }
 
     @media screen and (min-width: 1024px) {
@@ -110,3 +117,12 @@ export const PlusMinusButton = styled.button`
         padding: 0.5%;
     }
 `;
+
+export const AdminButton = styled.button`
+    min-width: fit-content;
+    padding: 0.35em;
+    width: 2em;
+    border-radius: 5px;
+    border: none;
+    margin: 0.25em;
+`

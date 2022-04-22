@@ -1,6 +1,8 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { deleteBooking } from "../services/DeleteBookingService";
-import { BorderDiv, PaddingDiv } from "./styled-components/Divs";
+import { SubmitButton } from "./styled-components/Buttons";
+import { PaddingDiv } from "./styled-components/Divs";
+import { Input } from "./styled-components/Forms";
 import { H2, H3, H4 } from "./styled-components/Headings";
 
 export function Contact() {
@@ -85,9 +87,6 @@ export function Contact() {
             </PaddingDiv>
             <H4>Tel: 08- 123 456 789</H4>
             <H4>E-post: kitchenonfire@restaurang.se</H4>
-            
-
-            <img id="muffinFireImg" src={require("../assets/muffin-fire.jpg")} alt="red-chili-in-flames"/>
 
             <PaddingDiv>
                 <H3>Hitta hit</H3>
@@ -99,19 +98,22 @@ export function Contact() {
             </PaddingDiv>
             <br/>
             <br/>
+
+            <img id="muffinFireImg" src={require("../assets/muffin-fire.jpg")} alt="red-chili-in-flames"/>
+
             <br/>
             <br/>
             <PaddingDiv>
                 <H3>Behöver du avboka?</H3>
                 <H4>Vänligen ange ditt bokningsnummer: </H4>
-                <input 
+                <Input 
                     type="text" 
                     onChange={handleChange} 
                     value={bookingId} 
                     name="bookingId" 
                     onSelect={() => setTouched({...touched, bookingIdNr: true})} 
                 />
-                <button disabled={disableSubmitInput} onClick = {() => customerDeleteBooking(bookingId)}>Avboka</button>
+                <SubmitButton disabled={disableSubmitInput} onClick = {() => customerDeleteBooking(bookingId)}>Avboka</SubmitButton>
                 {bookingCancelled}
                 {touched.bookingIdNr && <p>{error.bookingIdError.bookingIdNr}</p>}
             </PaddingDiv>

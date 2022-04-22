@@ -17,7 +17,6 @@ export function Layout() {
     return(
         <>
             <header className="layout-header">
-                {/* <h1 className="layout-logotype">Kitchen <br/>On <span className="layout-logotype-fire">Fire</span></h1> */}
                 <h1 className="layout-logotype">Kitchen 
                     <br/>
                     On <span className="layout-logotype-fire">Fire</span>
