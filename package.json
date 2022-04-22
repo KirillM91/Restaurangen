@@ -2,7 +2,7 @@
   "name": "restaurangen",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://github.com/KirillM91/Restaurangen",
+  "homepage": "https://kirillm91.github.io/Restaurangen/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.3",
     "@testing-library/react": "^12.1.4",
