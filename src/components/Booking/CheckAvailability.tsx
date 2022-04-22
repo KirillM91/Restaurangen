@@ -2,7 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import { GetBooking } from "../../models/GetBooking";
 import { GetBookingsService } from "../../services/GetBookingsService";
 import { ChoosenTimeButton, TimeButton } from "../styled-components/Buttons";
-import { TimeDiv } from "../styled-components/Divs";
+import { CheckAvailabilityDiv, TimeDiv } from "../styled-components/Divs";
 import { DateInput } from "../styled-components/Forms";
 
 interface IChildToParentProps {
@@ -210,7 +210,7 @@ export function CheckAvailability(props: IChildToParentProps) {
     }
 
     return(
-        <div> 
+        <CheckAvailabilityDiv> 
             <label htmlFor="date"> Välj datum: </label>
             <DateInput type="date" min={minDate} onChange={handleChange} value={pickedDate} name="date"></DateInput>
             
@@ -220,6 +220,6 @@ export function CheckAvailability(props: IChildToParentProps) {
                 {!picked21 && <TimeButton onClick={chooseTime21} disabled={timeTaken21}>Kl. 21</TimeButton>}
                 {picked21 && <ChoosenTimeButton onClick={chooseTime21} disabled={timeTaken21}>Kl. 21</ChoosenTimeButton>}
             </TimeDiv>
-        </div>
+        </CheckAvailabilityDiv>
     );
 };

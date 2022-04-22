@@ -7,8 +7,8 @@ import { Itouched } from "../../models/ITouched";
 import { PostNewBooking } from "../../services/PostNewBooking";
 import { PlusMinusButton, SubmitButton } from "../styled-components/Buttons";
 import { BorderDiv, PaddingDiv, TransparentDiv, WrongInputDiv } from "../styled-components/Divs";
-import { FormInput } from "../styled-components/Forms";
-import { H3, H4 } from "../styled-components/Headings";
+import { Form, FormInput } from "../styled-components/Forms";
+import { H2, H3, H4 } from "../styled-components/Headings";
 import { SmallText, WordBreakOK } from "../styled-components/Paragraf";
 import { CheckAvailability } from "./CheckAvailability";
 
@@ -247,7 +247,7 @@ export function Booking() {
                 <PlusMinusButton onClick = {() => setNumberOfGuests(numberOfGuests +1)} disabled={disablePlus || disableInput}>+</PlusMinusButton>
             </BorderDiv>
 
-            <form>
+            <Form>
             <label htmlFor="name"> Förnamn: </label>
             <FormInput
                 approved={error.nameError.approved}
@@ -259,7 +259,7 @@ export function Booking() {
                 value={customer.name} 
                 id="name"
                 onBlur={() => setTouched({...touched, fname: true})}                 
-            /> 
+            />             
             <br/>
 
             <label htmlFor="lastname"> Efternamn: </label>
@@ -304,7 +304,14 @@ export function Booking() {
                 onBlur={() => setTouched({...touched, phone: true})} 
                 placeholder="07xxxxxxxx"
             />
-            <br/><br/>
+            <br/>
+
+            <WrongInputDiv>
+                {touched.fname && <p>{error.nameError.name}</p>}
+                {touched.lastname && <p>{error.lastnameError.lastname}</p>}
+                {touched.email && <p>{error.emailError.email}</p>}
+                {touched.phone && <p>{error.phoneError.phone}</p>}
+            </WrongInputDiv>
             <BorderDiv>
             <input 
                 type="checkbox"
@@ -315,7 +322,7 @@ export function Booking() {
             </BorderDiv>
             <br/>
 
-            </form>
+            </Form>
 
             <SubmitButton disabled={disableSubmitInput} onClick={submitBooking}>Boka bord</SubmitButton>
         </div>
@@ -327,7 +334,7 @@ export function Booking() {
     if (!confirmation) {
         makeBooking = 
         <div>      
-            <PaddingDiv>
+            
                 <CheckAvailability 
                     resetNumberOfGuests={resetNumberOfGuests}
                     childToParentDate={childToParentDate} 
@@ -335,16 +342,11 @@ export function Booking() {
                     childToParentTables18={childToParentTables18}
                     childToParentTables21={childToParentTables21}
                 ></CheckAvailability>
-            </PaddingDiv>  
+             
                 
             {showInputUser}  
 
-            <WrongInputDiv>
-                {touched.fname && <p>{error.nameError.name}</p>}
-                {touched.lastname && <p>{error.lastnameError.lastname}</p>}
-                {touched.email && <p>{error.emailError.email}</p>}
-                {touched.phone && <p>{error.phoneError.phone}</p>}
-            </WrongInputDiv>
+
         </div>
     } 
 
@@ -358,7 +360,7 @@ export function Booking() {
             <br/>
             <H3>Vi ser fram emot ditt besök den {newBooking.date} kl. {newBooking.time}!</H3>
             <br/>
-            <H3>En bekräftelse har sänts via mail.</H3>
+            <H3>En bekräftelse har sänts via mail.(But not really)</H3>
             <br/>
             <H4><Link to="/"> Gå till förstasidan</Link></H4>
         </TransparentDiv>
@@ -366,6 +368,9 @@ export function Booking() {
 
     return(
         <>
+            <PaddingDiv>
+                <H2>Boka bord</H2>
+            </PaddingDiv>
             {makeBooking}
             {bookingDone}
         </>

@@ -51,6 +51,12 @@ export const ChoosenTimeButton = styled.button`
     padding: 4%;
     border-radius: 8px;
 
+    &:disabled {
+        background-color: #1b1a1a;
+        color: #868686;
+        border-color: #868686;
+    }
+
     @media screen and (min-width: 1024px) {
         padding: 1%;
     }
@@ -61,6 +67,7 @@ export const SubmitButton = styled.button`
     color: white;
     padding: 2%;
     border-radius: 8px;
+    margin-bottom: 1rem;
 
     &:disabled {
         background-color: #1b1a1a;
@@ -91,6 +98,11 @@ export const PlusMinusButton = styled.button`
     &:active {
         border: 3px solid gray;
         color: gray;
+    }
+
+    &:disabled {
+        border: 3px solid #5c5c5c;
+        color: #5c5c5c;
     }
     
     @media screen and (min-width: 1024px) {

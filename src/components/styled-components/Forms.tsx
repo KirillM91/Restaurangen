@@ -6,6 +6,7 @@ export const DateInput = styled.input`
     border: none;
     border-radius: 5px;
     width: 150px;
+    text-align: center;
 `;
 
 export const FormInput = styled.input<IApproved>`
@@ -20,4 +21,8 @@ export const FormInput = styled.input<IApproved>`
     @media screen and (min-width: 1024px) {
             width: 30%;
     }
+`;
+
+export const Form = styled.form`
+    height: fit-content;
 `;
