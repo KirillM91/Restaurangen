@@ -1,4 +1,4 @@
-## Link to website: https://elaborate-boba-de51f7.netlify.app/
+## Link to the website: https://kirillm91.github.io/Restaurangen/
 
 ### A school project at Medieinstitutet made by Fanny Lundberg and Kirill Missarov.
 ### The goal was to create a booking system for a fictional restaurant.
