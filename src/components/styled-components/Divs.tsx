@@ -141,6 +141,7 @@ export const MenuDiv = styled.div`
     border-top: 1px solid white;
     padding-top: 1em;
     gap: 15%;
+    
 
     @media screen and (max-width: 1024px) {
         flex-direction: column;
@@ -157,6 +158,7 @@ export const MenuDiv2 = styled.div`
     border-top: 1px solid white;
     padding-top: 1em;
     gap: 15%;
+    
 
     @media screen and (max-width: 1024px) {
         flex-direction: column-reverse;
@@ -171,3 +173,6 @@ export const MenuSection = styled.section`
     height: fit-content;
 `;
 
+export const MenuInlineBlockDiv = styled.div`
+    display: inline-block;
+`;
