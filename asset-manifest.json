@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "/KirillM91/Restaurangen/static/css/main.ce3a5cd2.css",
-    "main.js": "/KirillM91/Restaurangen/static/js/main.c33a2e2f.js",
-    "static/js/787.941db087.chunk.js": "/KirillM91/Restaurangen/static/js/787.941db087.chunk.js",
-    "static/media/chilli-bg.jpg": "/KirillM91/Restaurangen/static/media/chilli-bg.eb7442ea10f09d50be01.jpg",
-    "static/media/chilli-bg-mobile.jpg": "/KirillM91/Restaurangen/static/media/chilli-bg-mobile.cde682a38c6f68bc3f45.jpg",
-    "static/media/muffin-fire.jpg": "/KirillM91/Restaurangen/static/media/muffin-fire.6c226bd1be76d0810eb6.jpg",
-    "static/media/squid.jpg": "/KirillM91/Restaurangen/static/media/squid.083bef9c27f262739c57.jpg",
-    "static/media/chicken.jpg": "/KirillM91/Restaurangen/static/media/chicken.c5b7f2c1d3f9583313b6.jpg",
-    "static/media/ramen.jpg": "/KirillM91/Restaurangen/static/media/ramen.150028daf15f6b3167ae.jpg",
-    "index.html": "/KirillM91/Restaurangen/index.html",
-    "main.ce3a5cd2.css.map": "/KirillM91/Restaurangen/static/css/main.ce3a5cd2.css.map",
-    "main.c33a2e2f.js.map": "/KirillM91/Restaurangen/static/js/main.c33a2e2f.js.map",
-    "787.941db087.chunk.js.map": "/KirillM91/Restaurangen/static/js/787.941db087.chunk.js.map"
+    "main.css": "/Restaurangen/static/css/main.e6139fd0.css",
+    "main.js": "/Restaurangen/static/js/main.59da935d.js",
+    "static/js/787.941db087.chunk.js": "/Restaurangen/static/js/787.941db087.chunk.js",
+    "static/media/chilli-bg.jpg": "/Restaurangen/static/media/chilli-bg.eb7442ea10f09d50be01.jpg",
+    "static/media/chilli-bg-mobile.jpg": "/Restaurangen/static/media/chilli-bg-mobile.cde682a38c6f68bc3f45.jpg",
+    "static/media/muffin-fire.jpg": "/Restaurangen/static/media/muffin-fire.6c226bd1be76d0810eb6.jpg",
+    "static/media/squid.jpg": "/Restaurangen/static/media/squid.083bef9c27f262739c57.jpg",
+    "static/media/chicken.jpg": "/Restaurangen/static/media/chicken.c5b7f2c1d3f9583313b6.jpg",
+    "static/media/ramen.jpg": "/Restaurangen/static/media/ramen.150028daf15f6b3167ae.jpg",
+    "index.html": "/Restaurangen/index.html",
+    "main.e6139fd0.css.map": "/Restaurangen/static/css/main.e6139fd0.css.map",
+    "main.59da935d.js.map": "/Restaurangen/static/js/main.59da935d.js.map",
+    "787.941db087.chunk.js.map": "/Restaurangen/static/js/787.941db087.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.ce3a5cd2.css",
-    "static/js/main.c33a2e2f.js"
+    "static/css/main.e6139fd0.css",
+    "static/js/main.59da935d.js"
   ]
 }
